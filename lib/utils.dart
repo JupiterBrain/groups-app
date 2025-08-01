@@ -1,9 +1,13 @@
 import 'package:flutter/services.dart';
+import 'package:groups_v4/algorithm/classes.dart';
 
-typedef TRows = List<List<String>>;
+typedef Strings = List<String>;
+typedef TRows = List<Strings>;
+typedef Groups = List<Group>;
+typedef Items = List<Item>;
 
 class Spreadsheet {
-  List<String> columns;
+  Strings columns;
   TRows rows;
 
   Spreadsheet(this.columns, this.rows) {

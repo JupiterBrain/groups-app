@@ -3,7 +3,7 @@ import 'package:groups_v4/utils.dart';
 class Group implements Comparable<Group>, CSVSerializable {
   late final int id;
   late final String identifier;
-  late final List<String> description;
+  late final Strings description;
   late final int capacity;
   final Set<Item> members = {};
 
@@ -29,8 +29,8 @@ class Group implements Comparable<Group>, CSVSerializable {
 
 class Item implements Comparable<Item>, CSVSerializable {
   late final int id;
-  late final List<String> description;
-  late final List<Group> choices;
+  late final Strings description;
+  late final Groups choices;
   Group? assignedTo;
   int assignedToIdx = -1;
 

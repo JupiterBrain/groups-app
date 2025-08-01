@@ -1,7 +1,7 @@
 import 'package:groups_v4/algorithm/classes.dart';
 import 'package:groups_v4/utils.dart';
 
-Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
+Result<(Groups, Items), (Strings, Strings)> parse(
   int nrOfChoices,
   TRows groupsTable,
   TRows itemsTable, {
@@ -30,15 +30,15 @@ Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
   }
 }
 
-(Map<String, Group>, List<String>) parseGroups(TRows groupsTable) {
-  List<String> groupsErrors = [];
+(Map<String, Group>, Strings) parseGroups(TRows groupsTable) {
+  Strings groupsErrors = [];
   Map<String, Group> groups = {};
 
   void error(String error) {
     groupsErrors.add(error);
   }
 
-  void parseGroup(List<String> row, int id) {
+  void parseGroup(Strings row, int id) {
     if (row.length < 2) {
       return error("Error in row $id: A group must have columns for at least "
           "an identifier and a capacity.");
@@ -68,17 +68,17 @@ Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
   return (groups, groupsErrors);
 }
 
-(List<Item>, List<String>) parseItems(
+(Items, Strings) parseItems(
     int nrOfChoices, TRows itemsTable, Map<String, Group> groups,
     {bool allowDuplicates = false, bool allowEmpty = false}) {
-  List<String> itemsErrors = [];
-  List<Item> items = [];
+  Strings itemsErrors = [];
+  Items items = [];
 
   void error(String error) {
     itemsErrors.add(error);
   }
 
-  void parseItem(List<String> row, int id) {
+  void parseItem(Strings row, int id) {
     if (row.length < 1 + nrOfChoices) {
       return error(
           "Error in row $id: Element must have columns for all choices.");
@@ -86,7 +86,7 @@ Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
 
     var description = row.sublist(1, row.length - nrOfChoices);
 
-    var choices = <Group>[];
+    Groups choices = [];
 
     for (int k = 0; k < nrOfChoices; k++) {
       var identifier = row[row.length - nrOfChoices + k];

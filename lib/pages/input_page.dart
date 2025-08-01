@@ -27,8 +27,8 @@ class _InputPageState extends State<InputPage> {
 
   Spreadsheet? groupsTable;
   Spreadsheet? itemsTable;
-  List<String> groupsErrors = [];
-  List<String> itemsErrors = [];
+  Strings groupsErrors = [];
+  Strings itemsErrors = [];
   bool readyToStart = false;
   bool readyToValidate = false;
 

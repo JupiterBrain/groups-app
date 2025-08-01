@@ -6,7 +6,7 @@ class InputCard extends StatelessWidget {
   final String titlePrefix;
   final Function() pasteAction;
   final Spreadsheet? table;
-  final List<String> errors;
+  final Strings errors;
 
   const InputCard(this.titlePrefix, this.pasteAction, this.table, this.errors,
       {super.key});

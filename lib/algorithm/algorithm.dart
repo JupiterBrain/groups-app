@@ -1,6 +1,7 @@
 import 'package:groups_v4/algorithm/classes.dart';
+import 'package:groups_v4/utils.dart';
 
-Set<Item> performAlgorithm(List<Item> items) {
+Set<Item> performAlgorithm(Items items) {
   Set<Item> unassignable = {};
 
   for (Item item in items) {
