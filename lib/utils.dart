@@ -88,7 +88,7 @@ Future<String> getClipboardData() async {
   return data.text ?? "";
 }
 
-abstract class CSVSerializable {
+abstract interface class CSVSerializable {
   String get csv;
 }
 
