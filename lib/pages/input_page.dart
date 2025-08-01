@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groups_v4/models/input_card.dart';
 import 'package:groups_v4/utils.dart';
 
@@ -28,8 +29,8 @@ class _InputPageState extends State<InputPage> {
   Spreadsheet? itemsTable;
   List<String> groupsErrors = [];
   List<String> itemsErrors = [];
-  bool inputsValid = false;
   bool readyToStart = false;
+  bool readyToValidate = false;
 
   @override
   void dispose() {
@@ -38,15 +39,12 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
-  void validateInputs() {
-    setState(() {
-      inputsValid = true;
-    });
-  }
-
   void importGroupsFromClipboard() async {
     Spreadsheet groupsTable =
         Spreadsheet.ofClipboardString(await getClipboardData());
+
+    if (groupsTable.rows.isEmpty) return;
+
     groupsTable.prefixID();
     if (useDefaultCapacity) groupsTable.addGlobalCapacity(defaultCapacity);
 
@@ -58,6 +56,9 @@ class _InputPageState extends State<InputPage> {
   void importItemsFromClipboard() async {
     Spreadsheet itemsTable =
         Spreadsheet.ofClipboardString(await getClipboardData());
+
+    if (itemsTable.rows.isEmpty) return;
+
     itemsTable.prefixID();
 
     setState(() {
@@ -65,8 +66,21 @@ class _InputPageState extends State<InputPage> {
     });
   }
 
+  /* void validateInputs() {
+    parse()
+  } */
+
+  void startAlgorithm() {
+    Navigator.pushNamed(context, '/output', arguments: ());
+  }
+
   void updateState() {
-    readyToStart = groupsTable != null && itemsTable != null;
+    readyToStart = groupsTable != null &&
+        itemsTable != null &&
+        groupsErrors.isEmpty &&
+        itemsErrors.isEmpty;
+    readyToValidate =
+        !readyToStart && groupsTable != null && itemsTable != null;
   }
 
   @override
@@ -97,9 +111,27 @@ class _InputPageState extends State<InputPage> {
       ),
       floatingActionButton: readyToStart
           ? FloatingActionButton.extended(
-              onPressed: () => Navigator.pushNamed(context, '/output'),
-              label: const Text('Algorithmus starten'))
-          : null,
+              onPressed: () => startAlgorithm(),
+              label: const Row(
+                children: [
+                  Text('Zuordnen'),
+                  SizedBox(width: 8),
+                  Icon(
+                    Icons.groups_2,
+                    size: 28,
+                  ),
+                ],
+              ))
+          : readyToValidate
+              ? FloatingActionButton.extended(
+                  onPressed: () => {} /*validateInputs()*/,
+                  label: const Row(children: [
+                    Text('Eingaben prüfen'),
+                    SizedBox(width: 8),
+                    Icon(Icons.checklist),
+                  ]),
+                )
+              : null,
     );
   }
 
@@ -111,7 +143,26 @@ class _InputPageState extends State<InputPage> {
           labelText: 'Anzahl an Wahlen',
         ),
         keyboardType: TextInputType.number,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(2),
+          FilteringTextInputFormatter.digitsOnly
+        ],
         controller: _nrOfChoicesInputController,
+        onSubmitted: (value) {
+          int x = int.tryParse(value) ?? 3;
+
+          setState(() {
+            if (x < 2) {
+              x = 2;
+              _nrOfChoicesInputController.text = '2';
+            } else if (x > 15) {
+              x = 15;
+              _nrOfChoicesInputController.text = '15';
+            }
+
+            nrOfChoices = x;
+          });
+        },
       ),
       CheckboxListTile(
         title: const Text('Globale Gruppenkapazität verwenden'),
@@ -124,8 +175,24 @@ class _InputPageState extends State<InputPage> {
             labelText: 'Globale Gruppenkapazität',
           ),
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(2),
+            FilteringTextInputFormatter.digitsOnly
+          ],
           controller: _defaultCapacityInputController,
-        )
+          onSubmitted: (value) {
+            int x = int.tryParse(value) ?? 3;
+
+            setState(() {
+              if (x < 2) {
+                x = 2;
+                _defaultCapacityInputController.text = '2';
+              }
+
+              defaultCapacity = x;
+            });
+          },
+        ),
     ];
   }
 
