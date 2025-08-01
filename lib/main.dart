@@ -18,7 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Groups',
-      theme: ThemeData(primaryColor: Colors.blue, brightness: Brightness.light),
+      theme: ThemeData(
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent)),
       home: const InputPage(),
       routes: {
         '/input': (context) => const InputPage(),
