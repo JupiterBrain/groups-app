@@ -125,3 +125,11 @@ final class Error<R, E> extends Result<R, E> {
 
   const Error(this.error);
 }
+
+extension Blank on String {
+  bool get isBlank => trim().isEmpty;
+}
+
+extension Sum<T extends num> on Iterable<T> {
+  T sum() => reduce((sum, curr) => sum + curr as T);
+}

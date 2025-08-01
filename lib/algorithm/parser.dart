@@ -17,9 +17,7 @@ Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
       .map(
         (group) => group.capacity,
       )
-      .reduce(
-        (sum, c) => sum + c,
-      );
+      .sum();
 
   if (totalCapacity < items.length && !allowExcess) {
     groupsErrors.insert(0, "Not enough capacity");
@@ -93,7 +91,7 @@ Result<(List<Group>, List<Item>), (List<String>, List<String>)> parse(
     for (int k = 0; k < nrOfChoices; k++) {
       var identifier = row[row.length - nrOfChoices + k];
 
-      if (identifier.trim().isEmpty) {
+      if (identifier.isBlank) {
         if (allowEmpty && k > 0) {
           choices.add(choices[k - 1]);
           continue;
