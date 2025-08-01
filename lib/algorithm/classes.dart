@@ -2,12 +2,12 @@ import 'package:groups_v4/utils.dart';
 
 class Group implements Comparable<Group>, CSVSerializable {
   late final int id;
-  late final String title;
+  late final String identifier;
   late final List<String> description;
   late final int capacity;
   final Set<Item> members = {};
 
-  Group(this.id, this.title, this.description, this.capacity);
+  Group(this.id, this.identifier, this.description, this.capacity);
 
   bool get hasSpace => members.length < capacity;
   bool get isFull => members.length >= capacity;
@@ -24,7 +24,7 @@ class Group implements Comparable<Group>, CSVSerializable {
   int compareTo(Group other) => id - other.id;
 
   @override
-  String get csv => "$id,$title,$size,$capacity\n";
+  String get csv => "$id,$identifier,$size,$capacity\n";
 }
 
 class Item implements Comparable<Item>, CSVSerializable {
@@ -76,5 +76,5 @@ class Item implements Comparable<Item>, CSVSerializable {
 
   @override
   String get csv =>
-      "$id,${description.join(' | ')},$assignedToIdx,${assignedTo == null ? "null" : assignedTo!.title},${choices.join(',')}";
+      "$id,${description.join(' | ')},$assignedToIdx,${assignedTo == null ? "null" : assignedTo!.identifier},${choices.join(',')}";
 }
