@@ -10,6 +10,7 @@ class Spreadsheet {
   Strings columns;
   TRows rows;
 
+  //TODO replace error with nullable factory method
   Spreadsheet(this.columns, this.rows) {
     if (!isSpreadsheet()) throw "Spreadsheet condition not satisfied";
   }
@@ -77,8 +78,9 @@ void prefixID(TRows table) {
 }
 
 void addGlobalCapacity(TRows groupsTable, int globalCapacity) {
-  groupsTable.first.add('Kapazität');
-  groupsTable.sublist(1).forEach((row) => row.add(globalCapacity.toString()));
+  groupsTable
+    ..first.add('Kapazität')
+    ..sublist(1).forEach((row) => row.add(globalCapacity.toString()));
 }
 
 String toSpreadsheetString(TRows data) {
@@ -137,4 +139,51 @@ extension Blank on String {
 
 extension Sum<T extends num> on Iterable<T> {
   T sum() => reduce((sum, curr) => sum + curr as T);
+}
+
+class R {
+  int i;
+
+  R(this.i);
+
+  void operator <<(int k) {
+    i = k;
+    //return this;
+  }
+
+  operator <=(int k) {}
+
+  operator >=(int k) {}
+
+  operator ~() {}
+
+  operator -() {}
+
+  operator -(int k) {}
+
+  operator +(int k) {}
+
+  operator <(int k) {}
+
+  operator >(int k) {}
+
+  operator >>>(int k) {}
+
+  operator >>(int k) {}
+
+  operator ~/(int k) {}
+}
+
+void x() {
+  var r = R(5);
+
+  r << 6;
+
+  r.i;
+
+  '2'.rv;
+}
+
+extension Reactive<T> on T {
+  Box<T> get rv => Box(this);
 }

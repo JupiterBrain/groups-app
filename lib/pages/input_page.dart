@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:groups_v4/algorithm/classes.dart';
 import 'package:groups_v4/models/input_card.dart';
+import 'package:groups_v4/algorithm/algorithm.dart' as algorithm;
+import 'package:groups_v4/algorithm/parser.dart' as parser;
 import 'package:groups_v4/utils.dart';
 
 class InputPage extends StatefulWidget {
@@ -16,7 +19,7 @@ class _InputPageState extends State<InputPage> {
   final TextEditingController _nrOfChoicesInputController =
       TextEditingController(text: '3');
 
-  int nrOfChoices = 2;
+  int nrOfChoices = 3;
   bool useDefaultCapacity = false;
   int defaultCapacity = 15;
   bool expandRuleset = false;
@@ -29,8 +32,11 @@ class _InputPageState extends State<InputPage> {
   Spreadsheet? itemsTable;
   Strings groupsErrors = [];
   Strings itemsErrors = [];
+
+  Groups? groups;
+  Items? items;
+
   bool readyToStart = false;
-  bool readyToValidate = false;
 
   @override
   void dispose() {
@@ -51,6 +57,8 @@ class _InputPageState extends State<InputPage> {
     setState(() {
       this.groupsTable = groupsTable;
     });
+
+    validateInputs();
   }
 
   void importItemsFromClipboard() async {
@@ -64,29 +72,52 @@ class _InputPageState extends State<InputPage> {
     setState(() {
       this.itemsTable = itemsTable;
     });
+
+    validateInputs();
   }
 
-  /* void validateInputs() {
-    parse()
-  } */
+  void validateInputs() {
+    if (groupsTable == null || itemsTable == null) return;
+
+    var result = parser.parse(nrOfChoices, groupsTable!.rows, itemsTable!.rows,
+        allowDuplicates: allowDuplicates,
+        allowEmpty: allowEmpty,
+        allowExcess: allowExcess);
+
+    switch (result) {
+      case Ok(value: (var groups, var items)):
+        setState(() {
+          this.groups = groups;
+          this.items = items;
+          groupsErrors = [];
+          itemsErrors = [];
+          readyToStart = true;
+        });
+      case Error(error: (var groupsErrors, var itemsErrors)):
+        setState(() {
+          groups = null;
+          items = null;
+          this.groupsErrors = groupsErrors;
+          this.itemsErrors = itemsErrors;
+          readyToStart = false;
+        });
+    }
+  }
 
   void startAlgorithm() {
-    Navigator.pushNamed(context, '/output', arguments: ());
-  }
+    if (!readyToStart) return;
 
-  void updateState() {
-    readyToStart = groupsTable != null &&
-        itemsTable != null &&
-        groupsErrors.isEmpty &&
-        itemsErrors.isEmpty;
-    readyToValidate =
-        !readyToStart && groupsTable != null && itemsTable != null;
+    var unassignable = algorithm.performAlgorithm(items!);
+
+    Navigator.pushNamed(
+      context,
+      '/output',
+      arguments: AlgorithmOutput(groups!, items!, unassignable.toList()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    updateState();
-
     return Scaffold(
       appBar: AppBar(title: const Text('Eingabe')),
       body: SingleChildScrollView(
@@ -122,16 +153,7 @@ class _InputPageState extends State<InputPage> {
                   ),
                 ],
               ))
-          : readyToValidate
-              ? FloatingActionButton.extended(
-                  onPressed: () => {} /*validateInputs()*/,
-                  label: const Row(children: [
-                    Text('Eingaben prüfen'),
-                    SizedBox(width: 8),
-                    Icon(Icons.checklist),
-                  ]),
-                )
-              : null,
+          : null,
     );
   }
 
@@ -148,20 +170,23 @@ class _InputPageState extends State<InputPage> {
           FilteringTextInputFormatter.digitsOnly
         ],
         controller: _nrOfChoicesInputController,
+        //TODO works only on enter not on click away
         onSubmitted: (value) {
           int x = int.tryParse(value) ?? 3;
 
-          setState(() {
-            if (x < 2) {
-              x = 2;
-              _nrOfChoicesInputController.text = '2';
-            } else if (x > 15) {
-              x = 15;
-              _nrOfChoicesInputController.text = '15';
-            }
+          if (x < 2) {
+            x = 2;
+            _nrOfChoicesInputController.text = '2';
+          } else if (x > 15) {
+            x = 15;
+            _nrOfChoicesInputController.text = '15';
+          }
 
+          setState(() {
             nrOfChoices = x;
           });
+
+          validateInputs();
         },
       ),
       CheckboxListTile(
@@ -183,14 +208,16 @@ class _InputPageState extends State<InputPage> {
           onSubmitted: (value) {
             int x = int.tryParse(value) ?? 3;
 
-            setState(() {
-              if (x < 2) {
-                x = 2;
-                _defaultCapacityInputController.text = '2';
-              }
+            if (x < 2) {
+              x = 2;
+              _defaultCapacityInputController.text = '2';
+            }
 
+            setState(() {
               defaultCapacity = x;
             });
+
+            validateInputs();
           },
         ),
     ];
