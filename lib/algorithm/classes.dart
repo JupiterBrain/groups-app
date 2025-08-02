@@ -25,6 +25,13 @@ class Group implements Comparable<Group>, CSVSerializable {
 
   @override
   String get csv => "$id,$identifier,$size,$capacity\n";
+
+  //TODO add output of description and table headline passing
+  @override
+  String csvColumns() => "ID,Identifikator,Größe,Kapazität";
+
+  @override
+  String toString() => csv;
 }
 
 class Item implements Comparable<Item>, CSVSerializable {
@@ -75,6 +82,14 @@ class Item implements Comparable<Item>, CSVSerializable {
   int compareTo(Item other) => id - other.id;
 
   @override
-  String get csv =>
-      "$id,${description.join(' | ')},$assignedToIdx,${assignedTo == null ? "null" : assignedTo!.identifier},${choices.join(',')}";
+  String get csv => "$id,${description.join(' | ')},$assignedToIdx,"
+      "${assignedTo == null ? "null" : assignedTo!.identifier},"
+      "${choices.map((e) => e.identifier).join(' | ')}";
+
+  //TODO add output of description and table headline passing
+  @override
+  String csvColumns() => "ID,Beschreibung,k,Gruppe,Wahlen";
+
+  @override
+  String toString() => csv;
 }

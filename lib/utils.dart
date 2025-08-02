@@ -94,6 +94,7 @@ Future<String> getClipboardData() async {
 
 abstract interface class CSVSerializable {
   String get csv;
+  String csvColumns();
 }
 
 class Box<T> {
