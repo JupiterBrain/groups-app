@@ -10,6 +10,7 @@ class Spreadsheet {
   Strings columns;
   TRows rows;
 
+  //TODO replace error with nullable factory method
   Spreadsheet(this.columns, this.rows) {
     if (!isSpreadsheet()) throw "Spreadsheet condition not satisfied";
   }
@@ -77,8 +78,9 @@ void prefixID(TRows table) {
 }
 
 void addGlobalCapacity(TRows groupsTable, int globalCapacity) {
-  groupsTable.first.add('Kapazität');
-  groupsTable.sublist(1).forEach((row) => row.add(globalCapacity.toString()));
+  groupsTable
+    ..first.add('Kapazität')
+    ..sublist(1).forEach((row) => row.add(globalCapacity.toString()));
 }
 
 String toSpreadsheetString(TRows data) {

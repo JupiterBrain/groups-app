@@ -103,6 +103,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       var group = groups[identifier];
 
       if (group == null) {
+        //TODO redo because Error (add support for errors that can happen multiple times per line)
         return error("Error in row $id: group '$identifier' does not exist.");
       }
       if (choices.contains(group) && !allowDuplicates) {
