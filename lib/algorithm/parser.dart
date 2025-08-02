@@ -44,7 +44,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
           "an identifier and a capacity.");
     }
 
-    var identifier = row.first;
+    var identifier = row[1];
 
     if (groups.containsKey(identifier)) {
       return error("Error in row $id: A groups identifier must be unique.");
