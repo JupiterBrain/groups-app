@@ -7,8 +7,10 @@ class InputCard extends StatelessWidget {
   final Function() pasteAction;
   final Spreadsheet? table;
   final Strings errors;
+  final String formatInfo;
 
   const InputCard(this.titlePrefix, this.pasteAction, this.table, this.errors,
+      this.formatInfo,
       {super.key});
 
   @override
@@ -42,16 +44,27 @@ class InputCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      IconButton(
-                        tooltip: "Show format info",
-                        onPressed: () => {},
-                        icon: const Icon(Icons.info),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
+            if (table == null)
+              Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                          'Bitte ${titlePrefix}daten mit Überschriften aus Tabelle einfügen.'),
+                      Text(
+                        formatInfo,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  )),
             for (String error in errors)
               Text(
                 error,

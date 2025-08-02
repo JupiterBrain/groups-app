@@ -233,6 +233,7 @@ class _InputPageState extends State<InputPage> {
       importGroupsFromClipboard,
       groupsTable,
       groupsErrors,
+      "eindeutiger Identifikator | optionale Beschreibung | ... | Kapazität (/ globale Kapazität verwenden)",
     );
   }
 
@@ -242,6 +243,7 @@ class _InputPageState extends State<InputPage> {
       importItemsFromClipboard,
       itemsTable,
       itemsErrors,
+      "(insgesamt eindeutige) Identifikation | ... | Wahl 1 | ... | Wahl x",
     );
   }
 }
