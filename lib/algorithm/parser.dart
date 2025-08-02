@@ -125,3 +125,9 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 
   return (items, itemsErrors);
 }
+
+Spreadsheet assembleOutputTable(Items items) {
+  //TODO add propper sorting/filters
+  return Spreadsheet(items.first.csvColumns().split(','),
+      items.toSet().toList().map((e) => e.csv.split(',')).toList());
+}
