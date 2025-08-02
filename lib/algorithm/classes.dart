@@ -36,8 +36,8 @@ class Item implements Comparable<Item>, CSVSerializable {
 
   Item(this.id, this.description, this.choices);
 
-  bool get isAssigned => assignedTo == null;
-  bool get isUnassigned => assignedTo != null;
+  bool get isAssigned => assignedTo != null;
+  bool get isUnassigned => assignedTo == null;
 
   bool forceAssign(Group group) {
     if (isAssigned) return false;
