@@ -57,7 +57,8 @@ class ViewController {
     if (~groupsTable == null || ~itemsTable == null) return;
 
     var result = parser.parse(
-        ~nrOfChoices, (~groupsTable)!.rows, (~itemsTable)!.rows,
+        ~nrOfChoices, (~groupsInput)!.rows, (~itemsInput)!.rows,
+        defaultCapacity: ~useDefaultCapacity ? ~defaultCapacity : null,
         allowDuplicates: ~allowDuplicates,
         allowEmpty: ~allowEmpty,
         allowExcess: ~allowExcess);

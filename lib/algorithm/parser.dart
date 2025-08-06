@@ -7,11 +7,16 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   int nrOfChoices,
   TRows groupsTable,
   TRows itemsTable, {
+  int? defaultCapacity,
   bool allowDuplicates = false,
   bool allowEmpty = false,
   bool allowExcess = false,
 }) {
-  var (groups, groupsErrors) = parseGroups(groupsTable);
+  int? Function(String) capacityProvider = defaultCapacity == null
+      ? (field) => int.tryParse(field)
+      : (_) => defaultCapacity;
+
+  var (groups, groupsErrors) = parseGroups(groupsTable, capacityProvider);
   var (items, itemsErrors) = parseItems(nrOfChoices, itemsTable, groups,
       allowDuplicates: allowDuplicates, allowEmpty: allowEmpty);
 
@@ -32,7 +37,10 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   }
 }
 
-(Map<String, Group>, Strings) parseGroups(TRows groupsTable) {
+(Map<String, Group>, Strings) parseGroups(
+  TRows groupsTable,
+  int? Function(String) capacityProvider,
+) {
   Strings groupsErrors = [];
   Map<String, Group> groups = {};
 
@@ -55,7 +63,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       hadError = true;
     }
 
-    var capacity = int.tryParse(row.last);
+    var capacity = capacityProvider(row.last);
     if (capacity == null) {
       return error("Error in row $id: '${row.last}' is not a valid integer.");
     }
@@ -63,7 +71,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
     var description = row.sublist(2, row.length - 1);
 
     if (!hadError) {
-    groups[identifier] = Group(id, identifier, description, capacity);
+      groups[identifier] = Group(id, identifier, description, capacity);
     }
   }
 
