@@ -41,9 +41,6 @@ class ViewController {
       return;
     }
 
-    groupsInput.prefixID();
-    //TODO add ~useDefaultCapacity to reactive dependencies
-    if (~useDefaultCapacity) groupsInput.addGlobalCapacity(~defaultCapacity);
     this.groupsInput << groupsInput;
   }
 
@@ -54,7 +51,6 @@ class ViewController {
       return;
     }
 
-    itemsInput.prefixID();
     this.itemsInput << itemsInput;
   }
 
@@ -104,5 +100,24 @@ class ViewController {
       allowEmpty,
       allowExcess
     ], parseInput);
+
+    RV.listen([
+      groupsInput,
+      useDefaultCapacity,
+      defaultCapacity,
+    ], () {
+      if (~groupsInput == null) return;
+
+      var groupsTable = Spreadsheet.from((~groupsInput)!)..prefixID();
+
+      if (~useDefaultCapacity) groupsTable.addGlobalCapacity(~defaultCapacity);
+
+      this.groupsTable << groupsTable;
+    });
+
+    RV.listen([itemsInput], () {
+      if (~itemsTable == null) return;
+      itemsTable << (Spreadsheet.from((~itemsInput)!)..prefixID());
+    });
   }
 }

@@ -1,8 +1,6 @@
 import 'package:groups_v4/algorithm/classes.dart';
 import 'package:groups_v4/utils.dart';
 
-//TODO parse from user input spreadsheet, not from prefixed spreadsheet
-
 Result<(Groups, Items), (Strings, Strings)> parse(
   int nrOfChoices,
   TRows groupsTable,
@@ -56,7 +54,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
           "an identifier and a capacity.");
     }
 
-    var identifier = row[1];
+    var identifier = row[0];
 
     if (groups.containsKey(identifier)) {
       error("Error in row $id: A groups identifier must be unique.");
@@ -68,7 +66,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       return error("Error in row $id: '${row.last}' is not a valid integer.");
     }
 
-    var description = row.sublist(2, row.length - 1);
+    var description = row.sublist(1, row.length - 1);
 
     if (!hadError) {
       groups[identifier] = Group(id, identifier, description, capacity);
@@ -96,12 +94,12 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   void parseItem(Strings row, int id) {
     var hadError = false;
 
-    if (row.length < 1 + nrOfChoices) {
+    if (row.length < nrOfChoices) {
       return error(
           "Error in row $id: Element must have columns for all choices.");
     }
 
-    var description = row.sublist(1, row.length - nrOfChoices);
+    var description = row.sublist(0, row.length - nrOfChoices);
 
     Groups choices = [];
 

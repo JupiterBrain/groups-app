@@ -11,6 +11,11 @@ class Spreadsheet {
   TRows rows;
 
   Spreadsheet._internal(this.columns, this.rows);
+  Spreadsheet.from(Spreadsheet other)
+      : this._internal(
+          List<String>.from(other.columns),
+          other.rows.map((Strings row) => List<String>.from(row)).toList(),
+        );
 
   static Spreadsheet? of(Strings columns, TRows rows) {
     if (!isSpreadsheet(columns, rows)) {

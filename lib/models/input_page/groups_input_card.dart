@@ -12,7 +12,7 @@ class GroupsInputCard extends StatelessWidget {
     return InputCard(
       titlePrefix: "Gruppen",
       pasteAction: viewController.importGroupsFromClipboard,
-      table: viewController.groupsInput,
+      table: viewController.groupsTable,
       errors: viewController.groupsErrors,
       formatInfo: "eindeutiger Identifikator | optionale Beschreibung | ... | "
           "Kapazität (/ globale Kapazität verwenden)",
