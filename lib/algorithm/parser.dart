@@ -1,6 +1,8 @@
 import 'package:groups_v4/algorithm/classes.dart';
 import 'package:groups_v4/utils.dart';
 
+//TODO parse from user input spreadsheet, not from prefixed spreadsheet
+
 Result<(Groups, Items), (Strings, Strings)> parse(
   int nrOfChoices,
   TRows groupsTable,

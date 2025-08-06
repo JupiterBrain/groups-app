@@ -93,11 +93,3 @@ class Item implements Comparable<Item>, CSVSerializable {
   @override
   String toString() => csv;
 }
-
-class AlgorithmOutput {
-  final Groups groups;
-  final Items items;
-  final Items unassignable;
-
-  const AlgorithmOutput(this.groups, this.items, this.unassignable);
-}

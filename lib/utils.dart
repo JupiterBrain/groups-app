@@ -99,21 +99,6 @@ abstract interface class CSVSerializable {
   String csvColumns();
 }
 
-class Box<T> {
-  T value;
-  Set<Function(T)> callbacks = {};
-
-  Box(this.value);
-
-  void addListener(Function(T) callback) => callbacks.add(callback);
-
-  void removeListerner(Function(T) callback) => callbacks.remove(callback);
-
-  set update(T value) {
-    this.value = value;
-  }
-}
-
 sealed class Result<R, E> {
   const Result();
 
@@ -141,49 +126,56 @@ extension Sum<T extends num> on Iterable<T> {
   T sum() => reduce((sum, curr) => sum + curr as T);
 }
 
-class R {
-  int i;
+// overrridable <= >= ~ - - + < > >>> >> ~/
 
-  R(this.i);
+class RV<T> {
+  T _value;
+  final Set<Function(T)> _callbacks = {};
 
-  void operator <<(int k) {
-    i = k;
-    //return this;
+  RV(this._value);
+
+  void notify() {
+    for (var callback in _callbacks) {
+      callback(_value);
+    }
   }
 
-  operator <=(int k) {}
+  T get value => _value;
 
-  operator >=(int k) {}
+  T operator ~() => value;
 
-  operator ~() {}
+  set value(T newValue) {
+    _value = newValue;
+    notify();
+  }
 
-  operator -() {}
+  void operator <<(T newValue) => value = newValue;
 
-  operator -(int k) {}
+  void update(T newValue) => value = newValue;
 
-  operator +(int k) {}
+  void mutate(Function(T) mutation) {
+    mutation(_value);
+    notify();
+  }
 
-  operator <(int k) {}
+  T addListener(Function(T) callback) {
+    _callbacks.add(callback);
+    return value;
+  }
 
-  operator >(int k) {}
+  T operator >>>(Function(T) callback) => addListener(callback);
 
-  operator >>>(int k) {}
+  void removeListener(Function(T) callback) => _callbacks.remove(callback);
 
-  operator >>(int k) {}
+  void operator ~/(Function(T) callback) => removeListener(callback);
 
-  operator ~/(int k) {}
+  static void listen(List<RV> values, void Function() callback) {
+    for (var value in values) {
+      value >>> ((_) => callback());
+    }
+  }
 }
 
-void x() {
-  var r = R(5);
-
-  r << 6;
-
-  r.i;
-
-  '2'.rv;
-}
-
-extension Reactive<T> on T {
-  Box<T> get rv => Box(this);
+extension MakeReactive<T> on T {
+  RV<T> get rv => RV(this);
 }
