@@ -16,9 +16,12 @@ class ViewController {
   var allowExcess = false.rv;
   //TODO implement random remaining
   var randomRemaining = false.rv;
-  //TODO null initializer is not reassignable to Spreadsheet
+
+  var groupsInput = RV<Spreadsheet?>(null);
+  var itemsInput = RV<Spreadsheet?>(null);
   var groupsTable = RV<Spreadsheet?>(null);
   var itemsTable = RV<Spreadsheet?>(null);
+
   var groupsErrors = <String>[].rv;
   var itemsErrors = <String>[].rv;
 
@@ -32,25 +35,27 @@ class ViewController {
   var outputTable = RV<Spreadsheet?>(null);
 
   void importGroupsFromClipboard() async {
-    Spreadsheet groupsTable =
-        Spreadsheet.ofClipboardString(await getClipboardData());
+    var groupsInput = Spreadsheet.ofClipboardString(await getClipboardData());
 
-    if (groupsTable.rows.isEmpty) return;
+    if (groupsInput == null || groupsInput.isEmpty) {
+      return;
+    }
 
-    groupsTable.prefixID();
+    groupsInput.prefixID();
     //TODO add ~useDefaultCapacity to reactive dependencies
-    if (~useDefaultCapacity) groupsTable.addGlobalCapacity(~defaultCapacity);
-    this.groupsTable << groupsTable;
+    if (~useDefaultCapacity) groupsInput.addGlobalCapacity(~defaultCapacity);
+    this.groupsInput << groupsInput;
   }
 
   void importItemsFromClipboard() async {
-    Spreadsheet itemsTable =
-        Spreadsheet.ofClipboardString(await getClipboardData());
+    var itemsInput = Spreadsheet.ofClipboardString(await getClipboardData());
 
-    if (itemsTable.rows.isEmpty) return;
+    if (itemsInput == null || itemsInput.isEmpty) {
+      return;
+    }
 
-    itemsTable.prefixID();
-    this.itemsTable << itemsTable;
+    itemsInput.prefixID();
+    this.itemsInput << itemsInput;
   }
 
   void parseInput() {
@@ -90,9 +95,11 @@ class ViewController {
 
   ViewController() {
     RV.listen([
-      groupsTable,
-      itemsTable,
+      groupsInput,
+      itemsInput,
       nrOfChoices,
+      useDefaultCapacity,
+      defaultCapacity,
       allowDuplicates,
       allowEmpty,
       allowExcess

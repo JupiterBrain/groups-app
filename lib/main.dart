@@ -7,6 +7,8 @@ import 'package:groups_v4/pages/output_page.dart';
 //minGroupSize
 //balanceGroupSizes
 
+//TODO annotate all instances of immutable datastructures
+
 void main() {
   runApp(const MyApp());
 }

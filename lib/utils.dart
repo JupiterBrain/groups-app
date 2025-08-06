@@ -10,19 +10,25 @@ class Spreadsheet {
   Strings columns;
   TRows rows;
 
-  //TODO replace error with nullable factory method
-  Spreadsheet(this.columns, this.rows) {
-    if (!isSpreadsheet()) throw "Spreadsheet condition not satisfied";
+  Spreadsheet._internal(this.columns, this.rows);
+
+  static Spreadsheet? of(Strings columns, TRows rows) {
+    if (!isSpreadsheet(columns, rows)) {
+      return null;
+    }
+
+    return Spreadsheet._internal(columns, rows);
   }
 
-  Spreadsheet.ofRows(TRows table) : this(table.first, table.sublist(1));
-  Spreadsheet.ofCSVString(String table) : this.ofRows(csvToSpreadsheet(table));
-  Spreadsheet.ofClipboardString(String table)
-      : this.ofRows(clipboardToSpreadsheet(table));
+  static Spreadsheet? ofRows(TRows table) => of(table.first, table.sublist(1));
+  static Spreadsheet? ofCSVString(String table) =>
+      ofRows(csvToSpreadsheet(table));
+  static Spreadsheet? ofClipboardString(String table) =>
+      ofRows(clipboardToSpreadsheet(table));
 
   TRows get rowsWithTitles => [columns, ...rows];
 
-  bool isSpreadsheet() {
+  static bool isSpreadsheet(Strings columns, TRows rows) {
     int x = columns.length;
 
     if (x <= 0) return false;
@@ -47,6 +53,9 @@ class Spreadsheet {
       row.add("$globalCapacity");
     }
   }
+
+  bool get isEmpty => rows.isEmpty;
+  bool get isNotEmpty => rows.isNotEmpty;
 
   @override
   String toString() => rowsWithTitles.map((row) => row.join(',')).join('\n');

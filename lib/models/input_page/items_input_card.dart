@@ -12,7 +12,7 @@ class ItemsInputCard extends StatelessWidget {
     return InputCard(
       titlePrefix: "Element",
       pasteAction: viewController.importItemsFromClipboard,
-      table: viewController.itemsTable,
+      table: viewController.itemsInput,
       errors: viewController.itemsErrors,
       formatInfo:
           "(insgesamt eindeutige) Identifikation | ... | Wahl 1 | ... | Wahl x",
