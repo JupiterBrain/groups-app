@@ -41,6 +41,8 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   }
 
   void parseGroup(Strings row, int id) {
+    var hadError = false;
+
     if (row.length < 2) {
       return error("Error in row $id: A group must have columns for at least "
           "an identifier and a capacity.");
@@ -49,7 +51,8 @@ Result<(Groups, Items), (Strings, Strings)> parse(
     var identifier = row[1];
 
     if (groups.containsKey(identifier)) {
-      return error("Error in row $id: A groups identifier must be unique.");
+      error("Error in row $id: A groups identifier must be unique.");
+      hadError = true;
     }
 
     var capacity = int.tryParse(row.last);
@@ -59,7 +62,9 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 
     var description = row.sublist(2, row.length - 1);
 
+    if (!hadError) {
     groups[identifier] = Group(id, identifier, description, capacity);
+    }
   }
 
   for (int i = 0; i < groupsTable.length; i++) {
@@ -81,6 +86,8 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   }
 
   void parseItem(Strings row, int id) {
+    var hadError = false;
+
     if (row.length < 1 + nrOfChoices) {
       return error(
           "Error in row $id: Element must have columns for all choices.");
@@ -96,26 +103,28 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       if (identifier.isBlank) {
         if (allowEmpty && k > 0) {
           choices.add(choices[k - 1]);
-          continue;
         } else {
-          return error("Error in row $id: choice ${k + 1} is empty.");
+          error("Error in row $id: choice ${k + 1} is empty.");
+          hadError = true;
         }
       }
 
       var group = groups[identifier];
 
       if (group == null) {
-        //TODO redo because Error (add support for errors that can happen multiple times per line)
-        return error("Error in row $id: group '$identifier' does not exist.");
+        error("Error in row $id: group '$identifier' does not exist.");
+        hadError = true;
+        continue;
       }
       if (choices.contains(group) && !allowDuplicates) {
-        return error("Error in line $id: choice ${k + 1} is a duplicate.");
+        error("Error in line $id: choice ${k + 1} is a duplicate.");
+        hadError = true;
       }
 
       choices.add(group);
     }
 
-    items.add(Item(id, description, choices));
+    if (!hadError) items.add(Item(id, description, choices));
   }
 
   for (int i = 0; i < itemsTable.length; i++) {
