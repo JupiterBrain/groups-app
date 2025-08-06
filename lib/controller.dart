@@ -54,7 +54,7 @@ class ViewController {
   }
 
   void parseInput() {
-    if (~groupsTable == null || ~itemsTable == null) return;
+    if (~groupsInput == null || ~itemsInput == null) return;
 
     var result = parser.parse(
         ~nrOfChoices, (~groupsInput)!.rows, (~itemsInput)!.rows,
