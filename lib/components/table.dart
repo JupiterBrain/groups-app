@@ -8,17 +8,54 @@ class SpreadsheetTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columns: spreadsheet.columns
-          .map((title) => DataColumn(label: Text(title)))
-          .toList(),
-      rows: spreadsheet.rows
-          .map(
-            (row) => DataRow(
-              cells: row.map((cell) => DataCell(Text(cell))).toList(),
-            ),
-          )
-          .toList(),
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      defaultColumnWidth: const IntrinsicColumnWidth(),
+      border: TableBorder.all(color: Colors.grey, width: 1),
+      children: [
+        TableRow(
+          children:
+              spreadsheet.columns.map((title) => MyTableHeader(title)).toList(),
+        ),
+        ...(spreadsheet.rows
+            .map(
+              (row) => TableRow(
+                children: row.map((cell) => MyTableCell(cell)).toList(),
+              ),
+            )
+            .toList()),
+      ],
+    );
+  }
+}
+
+class MyTableHeader extends StatelessWidget {
+  final String text;
+
+  const MyTableHeader(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child: Text(
+        text,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class MyTableCell extends StatelessWidget {
+  final String text;
+
+  const MyTableCell(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child: Text(text),
     );
   }
 }
