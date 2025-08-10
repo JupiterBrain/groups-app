@@ -16,18 +16,6 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  final TextEditingController _defaultCapacityInputController =
-      TextEditingController(text: '15');
-  final TextEditingController _nrOfChoicesInputController =
-      TextEditingController(text: '3');
-
-  @override
-  void dispose() {
-    _defaultCapacityInputController.dispose();
-    _nrOfChoicesInputController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
