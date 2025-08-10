@@ -108,6 +108,15 @@ Future<String> getClipboardData() async {
   return data.text ?? "";
 }
 
+Future<Result<Null, Null>> setClipboardDataPlainText(String text) async {
+  try {
+    await Clipboard.setData(ClipboardData(text: text));
+    return Result.ok(null);
+  } on Exception {
+    return Result.error(null);
+  }
+}
+
 abstract interface class CSVSerializable {
   String get csv;
   String csvColumns();
@@ -140,7 +149,7 @@ extension Sum<T extends num> on Iterable<T> {
   T sum() => reduce((sum, curr) => sum + curr as T);
 }
 
-// overrridable <= >= ~ - - + < > >>> >> ~/
+// overridable <= >= ~ - - + < > >>> >> ~/
 
 class RV<T> {
   T _value;
