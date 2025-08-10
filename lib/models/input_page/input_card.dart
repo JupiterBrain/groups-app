@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:groups_v4/components/biaxial_scroll_view.dart';
+import 'package:groups_v4/components/error_container.dart';
+import 'package:groups_v4/components/list_builder.dart';
 import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
 import 'package:groups_v4/components/table.dart';
+import 'package:groups_v4/components/warning_container.dart';
 import 'package:groups_v4/utils.dart';
 
 class InputCard extends StatelessWidget {
@@ -43,14 +46,14 @@ class InputCard extends StatelessWidget {
                   child: Row(
                     children: [
                       FilledButton(
-                    onPressed: pasteAction,
-                    child: const Row(
-                      children: [
-                        Icon(Icons.paste),
-                        SizedBox(width: 8),
-                        Text('Einfügen'),
-                      ],
-                    ),
+                        onPressed: pasteAction,
+                        child: const Row(
+                          children: [
+                            Icon(Icons.paste),
+                            SizedBox(width: 8),
+                            Text('Einfügen'),
+                          ],
+                        ),
                       ),
                       //TODO tutorial/info
                       IconButton(
@@ -67,22 +70,15 @@ class InputCard extends StatelessWidget {
               reactiveValues: [table],
               builder: (context) {
                 if (~table == null) {
-                  return Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.amber, width: 2),
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                            'Bitte ${titlePrefix}daten mit Überschriften aus Tabelle einfügen.'),
-                        Text(
-                          formatInfo,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
+                  return WarningContainer(
+                    children: [
+                      Text(
+                          'Bitte ${titlePrefix}daten mit Überschriften aus Tabelle einfügen.'),
+                      Text(
+                        formatInfo,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
                   );
                 } else {
                   return const SizedBox.shrink();
@@ -93,28 +89,13 @@ class InputCard extends StatelessWidget {
               reactiveValues: [errors],
               builder: (context) {
                 if ((~errors).isNotEmpty) {
-                  return ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 200),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.red, width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: (~errors)
-                                .map(
-                                  (error) => Text(
-                                    error,
-                                    style: const TextStyle(color: Colors.red),
-                                  ),
-                                )
-                                .toList(),
-                          ),
+                  return ErrorContainer(
+                    child: SingleChildScrollView(
+                      child: ListBuilder(
+                        list: ~errors,
+                        builder: (context, item) => Text(
+                          item,
+                          style: TextStyle(color: Colors.red.shade900),
                         ),
                       ),
                     ),
