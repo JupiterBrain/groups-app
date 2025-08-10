@@ -32,14 +32,17 @@ class InputCard extends StatelessWidget {
               spacing: 20,
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
               runSpacing: 8,
               children: [
                 Text(
                   '${titlePrefix}daten',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 FittedBox(
-                  child: ElevatedButton(
+                  child: Row(
+                    children: [
+                      FilledButton(
                     onPressed: pasteAction,
                     child: const Row(
                       children: [
@@ -48,6 +51,13 @@ class InputCard extends StatelessWidget {
                         Text('Einfügen'),
                       ],
                     ),
+                      ),
+                      //TODO tutorial/info
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.info),
+                      ),
+                    ],
                   ),
                 ),
               ],
