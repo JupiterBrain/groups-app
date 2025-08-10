@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
 import 'package:groups_v4/controller.dart';
 import 'package:groups_v4/models/input_page/algorithm_extended_options_card.dart';
 import 'package:groups_v4/models/input_page/algorithm_parameters_pane.dart';
@@ -32,6 +33,32 @@ class _InputPageState extends State<InputPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Eingabe'),
+        actions: [
+          ReactiveWrapper(
+            reactiveValues: [viewController.assignmentTable],
+            builder: (context) {
+              if (~viewController.assignmentTable != null) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FilledButton(
+                    child: const Row(
+                      children: [
+                        Text("Zur Ausgabe"),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_forward),
+                      ],
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/output');
+                    },
+                  ),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
