@@ -24,7 +24,7 @@ class Group implements Comparable<Group>, CSVSerializable {
   int compareTo(Group other) => id - other.id;
 
   @override
-  String get csv => "$id,$identifier,$size,$capacity\n";
+  String get csv => "$id,$identifier,$size,$capacity";
 
   //TODO add output of description and table headline passing
   @override
