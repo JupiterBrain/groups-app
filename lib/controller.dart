@@ -147,7 +147,7 @@ class ViewController {
 
     RV.listen([itemsInput], () {
       if (~itemsInput == null) return;
-      itemsTable << Spreadsheet.from((~itemsInput)!..prefixID());
+      itemsTable << (Spreadsheet.from((~itemsInput)!)..prefixID());
     });
   }
 }

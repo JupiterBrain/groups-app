@@ -82,7 +82,7 @@ class Item implements Comparable<Item>, CSVSerializable {
   int compareTo(Item other) => id - other.id;
 
   @override
-  String get csv => "$id,${description.join(' | ')},$assignedToIdx,"
+  String get csv => "$id,${description.join(' | ')},${assignedToIdx + 1},"
       "${assignedTo == null ? "null" : assignedTo!.identifier},"
       "${choices.map((e) => e.identifier).join(' | ')}";
 

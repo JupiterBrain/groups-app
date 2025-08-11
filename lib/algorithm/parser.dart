@@ -145,7 +145,6 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 }
 
 Spreadsheet assembleOutputTable(Items items) {
-  //TODO add propper sorting/filters
   return Spreadsheet.of(
     items.first.csvColumns().split(','),
     (List<Item>.from(items)..sort())
