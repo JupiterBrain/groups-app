@@ -167,6 +167,32 @@ Spreadsheet assembleGroupOverwiewTable(Groups groups) {
   )!;
 }
 
-/* Spreadsheet assembleDiagnosticsTable() {} */
+Spreadsheet assembleDiagnosticsTable(
+    Groups groups, Items items, int nrOfChoices) {
+  var absolute = List.filled(nrOfChoices + 2, 0);
 
+  for (var item in items) {
+    absolute[item.assignedToIdx + 2]++;
+  }
+
+  var relative = absolute.map((e) => (e / items.length * 100).round()).toList();
+
+  TRows table = [];
+
+  if (absolute[1] != 0) {
+    table.add(["Unzugewiesen", "${absolute[1]}", "${relative[1]}"]);
+  }
+
+  if (absolute[0] != 0) {
+    table.add(["Zufällig", "${absolute[0]}", "${relative[0]}"]);
+  }
+
+  for (var i = 2; i < absolute.length; i++) {
+    table.add(["${i - 1}", "${absolute[i]}", "${relative[i]}"]);
+  }
+
+  table.add(["Summe", "${items.length}", "100"]);
+
+  return Spreadsheet.of(["Wahl", "Absolut", "%"], table)!;
+}
 }

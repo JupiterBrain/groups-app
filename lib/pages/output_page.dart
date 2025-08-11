@@ -58,21 +58,15 @@ class _OutputPageState extends State<OutputPage>
         children: tabs.values.toList(),
       ),
       floatingActionButton: FittedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton.extended(
-              heroTag: '2',
-              onPressed: viewController.copyCurrentResultTableToClipboard,
-              label: const Row(
-                children: [
-                  Text('Kopieren'),
-                  SizedBox(width: 4),
-                  Icon(Icons.copy),
-                ],
-              ),
-            )
-          ],
+        child: FloatingActionButton.extended(
+          onPressed: viewController.copyCurrentResultTableToClipboard,
+          label: const Row(
+            children: [
+              Text('Kopieren'),
+              SizedBox(width: 4),
+              Icon(Icons.copy),
+            ],
+          ),
         ),
       ),
     );

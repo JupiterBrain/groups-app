@@ -91,6 +91,8 @@ class ViewController {
 
     assignmentTable << parser.assembleOutputTable((~items)!);
     groupOverviewTable << parser.assembleGroupOverwiewTable((~groups)!);
+    analysisTable <<
+        parser.assembleDiagnosticsTable((~groups)!, (~items)!, ~nrOfChoices);
 
     readyToStart << false;
 
