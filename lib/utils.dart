@@ -62,8 +62,12 @@ class Spreadsheet {
   bool get isEmpty => rows.isEmpty;
   bool get isNotEmpty => rows.isNotEmpty;
 
+  String get csv => rowsWithTitles.map((row) => row.join(',')).join('\n');
+  String get clipboardString =>
+      rowsWithTitles.map((row) => row.join('\t')).join('\n');
+
   @override
-  String toString() => rowsWithTitles.map((row) => row.join(',')).join('\n');
+  String toString() => csv;
 
   //TODO update spreadsheet parser
   static TRows csvToSpreadsheet(String data) {

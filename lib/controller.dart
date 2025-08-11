@@ -96,6 +96,27 @@ class ViewController {
     Navigator.pushNamed(context, '/output');
   }
 
+  void copyCurrentResultTableToClipboard() async {
+    var spreadsheet = switch (~outputPageTab) {
+      0 => ~groupOverviewTable,
+      1 => ~assignmentTable,
+      2 => ~analysisTable,
+      _ => null,
+    };
+
+    if (spreadsheet == null) return;
+
+    var clipboardString = spreadsheet.clipboardString;
+
+    var result = await setClipboardDataPlainText(clipboardString);
+
+    switch (result) {
+      case Ok(value: null):
+      case Error(error: null):
+    }
+  }
+
+
   ViewController() {
     RV.listen([
       groupsInput,
