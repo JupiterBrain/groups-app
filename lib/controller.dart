@@ -32,7 +32,11 @@ class ViewController {
 
   var unassignable = RV<Items?>(null);
 
-  var outputTable = RV<Spreadsheet?>(null);
+  var outputPageTab = 0.rv;
+
+  var groupOverviewTable = RV<Spreadsheet?>(null);
+  var assignmentTable = RV<Spreadsheet?>(null);
+  var analysisTable = RV<Spreadsheet?>(null);
 
   void importGroupsFromClipboard() async {
     var groupsInput = Spreadsheet.ofClipboardString(await getClipboardData());
