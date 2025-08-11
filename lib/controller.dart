@@ -14,7 +14,6 @@ class ViewController {
   var allowDuplicates = false.rv;
   var allowEmpty = false.rv;
   var allowExcess = false.rv;
-  //TODO implement random remaining
   var randomRemaining = false.rv;
 
   var groupsInput = RV<Spreadsheet?>(null);
@@ -87,7 +86,9 @@ class ViewController {
   void startAlgorithm(BuildContext context) {
     if (!~readyToStart) return;
 
-    var _ = algorithm.performAlgorithm((~items)!);
+    var unassignable = algorithm.performAlgorithm((~items)!);
+    algorithm.randomRemaining((~groups)!, unassignable);
+
     assignmentTable << parser.assembleOutputTable((~items)!);
     groupOverviewTable << parser.assembleGroupOverwiewTable((~groups)!);
 
@@ -115,7 +116,6 @@ class ViewController {
       case Error(error: null):
     }
   }
-
 
   ViewController() {
     RV.listen([

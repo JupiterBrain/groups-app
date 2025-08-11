@@ -53,8 +53,6 @@ void moveTo(Item item, int k) {
   item.assign(k);
 }
 
-
-
 /* 
 bool trySwap2(Item item, int k) {
   for (int curr = k - 1; curr >= 0; curr--) {
@@ -68,3 +66,16 @@ bool trySwap2(Item item, int k) {
 
   return false;
 } */
+
+//// Random Remaining
+
+void randomRemaining(Groups groups, Set<Item> unassignable) {
+  var vacantGroups = groups.where((g) => g.hasSpace).toSet();
+
+  for (var item in unassignable) {
+    if (vacantGroups.isEmpty) return;
+    var group = vacantGroups.first;
+    item.forceAssign(group);
+    if (group.isFull) vacantGroups.remove(group);
+  }
+}
