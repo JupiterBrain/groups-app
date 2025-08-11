@@ -87,8 +87,11 @@ class ViewController {
   void startAlgorithm(BuildContext context) {
     if (!~readyToStart) return;
 
-    unassignable << algorithm.performAlgorithm((~items)!).toList();
-    outputTable << parser.assembleOutputTable((~items)!);
+    var _ = algorithm.performAlgorithm((~items)!);
+    assignmentTable << parser.assembleOutputTable((~items)!);
+    groupOverviewTable << parser.assembleGroupOverwiewTable((~groups)!);
+
+    readyToStart << false;
 
     Navigator.pushNamed(context, '/output');
   }

@@ -144,8 +144,29 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   return (items, itemsErrors);
 }
 
-Spreadsheet? assembleOutputTable(Items items) {
+Spreadsheet assembleOutputTable(Items items) {
   //TODO add propper sorting/filters
-  return Spreadsheet.of(items.first.csvColumns().split(','),
-      items.toSet().toList().map((e) => e.csv.split(',')).toList());
+  return Spreadsheet.of(
+    items.first.csvColumns().split(','),
+    (List<Item>.from(items)..sort())
+        .map(
+          (e) => e.csv.split(','),
+        )
+        .toList(),
+  )!;
+}
+
+Spreadsheet assembleGroupOverwiewTable(Groups groups) {
+  return Spreadsheet.of(
+    groups.first.csvColumns().split(','),
+    groups
+        .map(
+          (e) => e.csv.split(','),
+        )
+        .toList(),
+  )!;
+}
+
+/* Spreadsheet assembleDiagnosticsTable() {} */
+
 }
