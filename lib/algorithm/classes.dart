@@ -26,9 +26,10 @@ class Group implements Comparable<Group>, CSVSerializable {
   @override
   String get csv => "$id,$identifier,$size,$capacity";
 
-  //TODO add output of description and table headline passing
   @override
   String csvColumns() => "ID,Identifikator,Größe,Kapazität";
+
+  Strings get row => ["$id", identifier, ...description, "$size", "$capacity"];
 
   @override
   String toString() => csv;
@@ -86,9 +87,15 @@ class Item implements Comparable<Item>, CSVSerializable {
       "${assignedTo == null ? "null" : assignedTo!.identifier},"
       "${choices.map((e) => e.identifier).join(' | ')}";
 
-  //TODO add output of description and table headline passing
   @override
   String csvColumns() => "ID,Beschreibung,k,Gruppe,Wahlen";
+  Strings get row => [
+        "$id",
+        ...description,
+        "${assignedToIdx + 1}",
+        (assignedTo == null ? "-" : assignedTo!.identifier),
+        ...choices.map((e) => e.identifier),
+      ];
 
   @override
   String toString() => csv;

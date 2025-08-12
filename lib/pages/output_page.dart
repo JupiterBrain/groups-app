@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groups_v4/components/biaxial_scroll_view.dart';
 import 'package:groups_v4/components/reactive/r_table.dart';
 import 'package:groups_v4/controller.dart';
 
@@ -17,7 +18,7 @@ class _OutputPageState extends State<OutputPage>
     const Tab(text: "Gruppenübersicht"):
         RTable(table: viewController.groupOverviewTable),
     const Tab(text: "Zuordnungsergebnis"):
-        RTable(table: viewController.assignmentTable),
+        BiaxialScrollView(child: RTable(table: viewController.assignmentTable)),
     const Tab(text: "Zuordnungsanalyse"):
         RTable(table: viewController.analysisTable),
   };

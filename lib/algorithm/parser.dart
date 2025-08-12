@@ -144,25 +144,18 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   return (items, itemsErrors);
 }
 
-Spreadsheet assembleOutputTable(Items items) {
+Spreadsheet assembleAssignmentTable(Items items, Strings itemsOutputHeadline) {
   return Spreadsheet.of(
-    items.first.csvColumns().split(','),
-    (List<Item>.from(items)..sort())
-        .map(
-          (e) => e.csv.split(','),
-        )
-        .toList(),
+    itemsOutputHeadline,
+    (List<Item>.from(items)..sort()).map((e) => e.row).toList(),
   )!;
 }
 
-Spreadsheet assembleGroupOverwiewTable(Groups groups) {
+Spreadsheet assembleGroupOverwiewTable(
+    Groups groups, Strings groupsOutputHeadline) {
   return Spreadsheet.of(
-    groups.first.csvColumns().split(','),
-    groups
-        .map(
-          (e) => e.csv.split(','),
-        )
-        .toList(),
+    groupsOutputHeadline,
+    groups.map((e) => e.row).toList(),
   )!;
 }
 

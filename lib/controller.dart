@@ -20,6 +20,10 @@ class ViewController {
   var itemsInput = RV<Spreadsheet?>(null);
   var groupsTable = RV<Spreadsheet?>(null);
   var itemsTable = RV<Spreadsheet?>(null);
+  var groupsInputHeadline = RV<Strings?>(null);
+  var itemsInputHeadline = RV<Strings?>(null);
+  var groupsOutputHeadline = RV<Strings?>(null);
+  var itemsOutputHeadline = RV<Strings?>(null);
 
   var groupsErrors = <String>[].rv;
   var itemsErrors = <String>[].rv;
@@ -89,8 +93,10 @@ class ViewController {
     var unassignable = algorithm.performAlgorithm((~items)!);
     algorithm.randomRemaining((~groups)!, unassignable);
 
-    assignmentTable << parser.assembleOutputTable((~items)!);
-    groupOverviewTable << parser.assembleGroupOverwiewTable((~groups)!);
+    assignmentTable <<
+        parser.assembleAssignmentTable((~items)!, (~itemsOutputHeadline)!);
+    groupOverviewTable <<
+        parser.assembleGroupOverwiewTable((~groups)!, (~groupsOutputHeadline)!);
     analysisTable <<
         parser.assembleDiagnosticsTable((~groups)!, (~items)!, ~nrOfChoices);
 
@@ -149,5 +155,43 @@ class ViewController {
       if (~itemsInput == null) return;
       itemsTable << (Spreadsheet.from((~itemsInput)!)..prefixID());
     });
+
+    RV.listen(
+      [groupsInput],
+      () => groupsInputHeadline << (~groupsInput)?.columns,
+    );
+
+    RV.listen(
+      [itemsInput],
+      () => itemsInputHeadline << (~itemsInput)?.columns,
+    );
+
+    RV.listen(
+      [groupsInputHeadline],
+      () =>
+          groupsOutputHeadline <<
+          [
+            "ID",
+            ...(~groupsInputHeadline)!
+                .sublist(0, (~groupsInputHeadline)!.length - 1),
+            "Größe",
+            (~groupsInputHeadline)!.last,
+          ],
+    );
+
+    RV.listen(
+      [itemsInputHeadline],
+      () =>
+          itemsOutputHeadline <<
+          [
+            "ID",
+            ...(~itemsInputHeadline)!
+                .sublist(0, (~itemsInputHeadline)!.length - ~nrOfChoices),
+            "k",
+            "Gruppe",
+            ...(~itemsInputHeadline)!
+                .sublist((~itemsInputHeadline)!.length - ~nrOfChoices),
+          ],
+    );
   }
 }
