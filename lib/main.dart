@@ -4,10 +4,14 @@ import 'package:groups_v4/pages/output_page.dart';
 
 //package:window_manager
 
+//add proper tutorials
+//annotate all instances of immutable datastructures
 //minGroupSize
 //balanceGroupSizes
 
-//TODO annotate all instances of immutable datastructures
+//TODO add auto uptade checker
+//TODO add basic info dialogs () => showDialog()
+//TODO about dialog
 
 void main() {
   runApp(const MyApp());
