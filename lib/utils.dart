@@ -71,20 +71,144 @@ class Spreadsheet {
 
   //TODO update spreadsheet parser
   static TRows csvToSpreadsheet(String data) {
-    return data
+    const String fieldDeliminator = ',';
+
+    TRows table = [];
+    Strings row = [];
+    String field = '';
+    bool escaped = false;
+
+    for (var idx = 0; idx < data.length; idx++) {
+      switch (data[idx]) {
+        case fieldDeliminator:
+          {
+            if (!escaped) {
+              row.add(field);
+              field = '';
+            } else {
+              field += fieldDeliminator;
+            }
+          }
+        case '\n':
+          {
+            if (!escaped) {
+              field = field.trim();
+              row.add(field);
+              field = '';
+              table.add(row);
+              row = [];
+            } else {
+              field += '\n';
+            }
+          }
+        case '"':
+          {
+            if (!escaped) {
+              escaped = true;
+            } else {
+              switch (data[idx + 1]) {
+                case fieldDeliminator:
+                case '\n':
+                  {
+                    escaped = false;
+                  }
+                case '"':
+                  {
+                    field += '"';
+                    idx++;
+                  }
+                case _:
+                  {
+                    return [];
+                  }
+              }
+            }
+          }
+        case var char:
+          {
+            field += char;
+          }
+      }
+    }
+
+    return table;
+  }
+
+  /* return data
         .trim()
         .split('\n')
         .map((line) => line.split(',').map((e) => e.trim()).toList())
-        .toList();
-  }
+        .toList(); */
 
   static TRows clipboardToSpreadsheet(String data) {
-    return data
+    const String fieldDeliminator = ',';
+
+    TRows table = [];
+    Strings row = [];
+    String field = '';
+    bool escaped = false;
+
+    for (var idx = 0; idx < data.length; idx++) {
+      switch (data[idx]) {
+        case fieldDeliminator:
+          {
+            if (!escaped) {
+              row.add(field);
+              field = '';
+            } else {
+              field += fieldDeliminator;
+            }
+          }
+        case '\n':
+          {
+            if (!escaped) {
+              field = field.trim();
+              row.add(field);
+              field = '';
+              table.add(row);
+              row = [];
+            } else {
+              field += '\n';
+            }
+          }
+        case '"':
+          {
+            if (!escaped) {
+              escaped = true;
+            } else {
+              switch (data[idx + 1]) {
+                case fieldDeliminator:
+                case '\n':
+                  {
+                    escaped = false;
+                  }
+                case '"':
+                  {
+                    field += '"';
+                    idx++;
+                  }
+                case _:
+                  {
+                    return [];
+                  }
+              }
+            }
+          }
+        case var char:
+          {
+            field += char;
+          }
+      }
+    }
+
+    return table;
+  }
+
+  /* return data
         .trim()
         .split('\n')
         .map((line) => line.split('\t').map((e) => e.trim()).toList())
-        .toList();
-  }
+        .toList(); */
 }
 
 void prefixID(TRows table) {
