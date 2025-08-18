@@ -57,7 +57,8 @@ class InputCard extends StatelessWidget {
                       ),
                       //TODO tutorial/info
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/tutorial'),
                         icon: const Icon(Icons.info),
                       ),
                     ],

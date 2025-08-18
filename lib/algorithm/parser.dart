@@ -187,4 +187,3 @@ Spreadsheet assembleDiagnosticsTable(
 
   return Spreadsheet.of(["Wahl", "Absolut", "%"], table)!;
 }
-}
