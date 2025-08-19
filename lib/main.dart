@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:groups_v4/update_checker.dart';
 import 'package:groups_v4/pages/input_page.dart';
 import 'package:groups_v4/pages/output_page.dart';
 import 'package:groups_v4/pages/tutorial_dialog.dart';
@@ -13,9 +14,9 @@ import 'package:groups_v4/pages/tutorial_dialog.dart';
 //minGroupSize
 //balanceGroupSizes
 
-//TODO add auto uptade checker
-//TODO add basic info dialogs () => showDialog()
 //TODO about dialog
+
+final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +29,8 @@ void main() {
     appWindow.title = "Groups";
     appWindow.show();
   });
+
+  checkForUpdate(scaffoldMessengerKey);
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +43,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme:
               ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent)),
-      home: const InputPage(),
+      home: ScaffoldMessenger(
+        key: scaffoldMessengerKey,
+        child: const InputPage(),
+      ),
       routes: {
         '/input': (context) => const InputPage(),
         '/output': (context) => const OutputPage(),
