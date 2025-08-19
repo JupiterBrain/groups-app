@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:groups_v4/pages/input_page.dart';
 import 'package:groups_v4/pages/output_page.dart';
 import 'package:groups_v4/pages/tutorial_dialog.dart';
 
 //https://docs.flutter.dev/platform-integration/windows/building#supporting-windows-ui-guidelines
 //https://docs.flutter.dev/platform-integration/windows/building#msix-packaging
+//https://github.com/fastforgedev/fastforge
 
 //add proper tutorials
 //annotate all instances of immutable datastructures
@@ -17,6 +19,15 @@ import 'package:groups_v4/pages/tutorial_dialog.dart';
 
 void main() {
   runApp(const MyApp());
+
+  doWhenWindowReady(() {
+    const initialSize = Size(450, 250);
+    appWindow.minSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.title = "Groups";
+    appWindow.show();
+  });
 }
 
 class MyApp extends StatelessWidget {

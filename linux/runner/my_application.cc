@@ -1,3 +1,4 @@
+#include <bitsdojo_window_linux/bitsdojo_window_plugin.h>
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
@@ -47,7 +48,9 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "groups_v4");
   }
 
-  gtk_window_set_default_size(window, 1280, 720);
+  auto bdw = bitsdojo_window_from(window);            // <-- add this line
+  bdw->setCustomFrame(false);                          // <-- add this line; changed to false
+  //gtk_window_set_default_size(window, 1280, 720);   // <-- comment this line
   gtk_widget_show(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
