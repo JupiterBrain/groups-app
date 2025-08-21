@@ -4,6 +4,9 @@ on:
   release:
     types: [created]
 
+permissions:
+  contents
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -27,6 +30,6 @@ jobs:
       - uses: softprops/action-gh-release@v2.3.2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          files: groups_v4.AppImage
+          files: $HOME/Groups-x86_64.AppImage
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_WITH_REPO_SCOPE }}
