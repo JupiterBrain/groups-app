@@ -1,0 +1,30 @@
+name: Build and bundle installers
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+      - uses: miurahr/install-linuxdeploy-action@v1.8.0
+      - run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+      - run: flutter pub get
+      - run: flutter build linux
+      - run: |
+          mkdir -p AppDir/usr/bin
+          cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
+          cp installer/groups_v4.desktop AppDir/
+          cp installer/icon.png AppDir/
+          linuxdeploy --appdir AppDir --output appimage
+      - uses: softprops/action-gh-release@v2.3.2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: groups_v4.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
