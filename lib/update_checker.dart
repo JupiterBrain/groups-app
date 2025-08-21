@@ -18,7 +18,16 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
       headers: {'Accept': 'application/vnd.github+json'},
     );
 
-    if (response.statusCode != 200) return;
+    if (response.statusCode != 200) {
+      key.currentState!.showSnackBar(
+        const SnackBar(
+          showCloseIcon: true,
+          duration: Duration(seconds: 15),
+          content: Text("Updateüberprüfung fehlgeschlagen."),
+        ),
+      );
+      return;
+    }
 
     final json = jsonDecode(response.body);
     debugPrint(json);
@@ -26,9 +35,18 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
 
     if (latestVersion == null) return;
 
-    if (latestVersion.compareTo(localVersion) >= 0) return;
+    if (latestVersion.compareTo(localVersion) < 0) {
+      showUpdateDialog(key, localVersion, latestVersion, json['html_url']);
+      return;
+    }
 
-    showUpdateDialog(key, localVersion, latestVersion, json['html_url']);
+    key.currentState!.showSnackBar(
+      const SnackBar(
+        showCloseIcon: true,
+        duration: Duration(seconds: 15),
+        content: Text("Dies ist die neueste verfügbare Version"),
+      ),
+    );
   } catch (e) {
     return;
   }
