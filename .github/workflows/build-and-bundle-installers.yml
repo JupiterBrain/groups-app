@@ -33,11 +33,7 @@ jobs:
           cp -v installer/icon.png AppDir/
       - name: Package bundle
         run: ./linuxdeploy.AppImage --appdir AppDir --output appimage
-      - uses: actions/upload-release-asset@v1
+      - name: Upload installer to release
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./Groups*.AppImage
-          asset_name: Groups-x86_64.AppImage
-          asset_content_type: application/octet-stream
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: Groups-x86_64.AppImage
