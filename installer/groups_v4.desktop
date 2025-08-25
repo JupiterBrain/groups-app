@@ -1,6 +1,9 @@
 [Desktop Entry]
-Name=Groups
-Exec=groups_v4
-Icon=icon
 Type=Application
-Categories=Utility;
+Version=1.0
+Name=Groups
+Path=/usr/bin
+Exec=groups_v4
+Icon=/usr/lib/groups_v4/icon.png
+Terminal=false
+Categories=Utility
