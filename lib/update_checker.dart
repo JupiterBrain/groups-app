@@ -14,7 +14,7 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
 
     final response = await http.get(
       Uri.parse(
-          'https://api.github.com/repos/JupiterBrain/groups_v4/releases/latest'),
+          'https://api.github.com/repos/JupiterBrain/groups-app/releases/latest'),
       headers: {'Accept': 'application/vnd.github+json'},
     );
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
-import 'package:groups_v4/components/table.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/components/table.dart';
+import 'package:groups_app/utils.dart';
 
 class RTable extends StatelessWidget {
   final RV<Spreadsheet?> table;

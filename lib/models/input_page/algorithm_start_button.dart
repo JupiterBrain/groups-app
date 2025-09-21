@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/reactive/reactive_conditional.dart';
-import 'package:groups_v4/controller.dart';
+import 'package:groups_app/components/reactive/reactive_conditional.dart';
+import 'package:groups_app/controller.dart';
 
 class AlgorithmStartButton extends StatelessWidget {
   const AlgorithmStartButton({

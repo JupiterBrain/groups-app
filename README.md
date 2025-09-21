@@ -4,8 +4,8 @@ The one with the assignemnts.
 
 ## Download
 
-Download the latest version of the app [here](https://github.com/JupiterBrain/groups_v4/releases/latest).\
-If you have questions on how to download or install the app, visit the [documentation](https://JupiterBrain.github.io/groups_v4/download).
+Download the latest version of the app [here](https://github.com/JupiterBrain/groups-app/releases/latest).\
+If you have questions on how to download or install the app, visit the [documentation](https://JupiterBrain.github.io/groups-app/download).
 
 ### Downloading on Linux
 
@@ -14,4 +14,4 @@ Upon first execution, the app will also create a .desktop link.
 
 ## Tutorial
 
-If you are unsure, how tu use the app, consult the in-app tutorial, or visit the [documentation](https://JupiterBrain.gihub.io/groups_v4/tutorial).
+If you are unsure, how to use the app, consult the in-app tutorial, or visit the [documentation](https://JupiterBrain.gihub.io/groups-app/tutorial).

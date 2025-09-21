@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/biaxial_scroll_view.dart';
-import 'package:groups_v4/components/error_container.dart';
-import 'package:groups_v4/components/list_builder.dart';
-import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
-import 'package:groups_v4/components/table.dart';
-import 'package:groups_v4/components/warning_container.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/components/biaxial_scroll_view.dart';
+import 'package:groups_app/components/error_container.dart';
+import 'package:groups_app/components/list_builder.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/components/table.dart';
+import 'package:groups_app/components/warning_container.dart';
+import 'package:groups_app/utils.dart';
 
 class InputCard extends StatelessWidget {
   final String titlePrefix;

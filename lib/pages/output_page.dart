@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/biaxial_scroll_view.dart';
-import 'package:groups_v4/components/reactive/r_table.dart';
-import 'package:groups_v4/controller.dart';
+import 'package:groups_app/components/biaxial_scroll_view.dart';
+import 'package:groups_app/components/reactive/r_table.dart';
+import 'package:groups_app/controller.dart';
 
 class OutputPage extends StatefulWidget {
   const OutputPage({super.key});

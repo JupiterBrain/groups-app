@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:groups_v4/algorithm/classes.dart';
+import 'package:groups_app/algorithm/classes.dart';
 
 typedef Strings = List<String>;
 typedef TRows = List<Strings>;

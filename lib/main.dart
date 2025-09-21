@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:groups_v4/update_checker.dart';
-import 'package:groups_v4/pages/input_page.dart';
-import 'package:groups_v4/pages/output_page.dart';
-import 'package:groups_v4/pages/tutorial_dialog.dart';
+import 'package:groups_app/update_checker.dart';
+import 'package:groups_app/pages/input_page.dart';
+import 'package:groups_app/pages/output_page.dart';
+import 'package:groups_app/pages/tutorial_dialog.dart';
 
 //https://docs.flutter.dev/platform-integration/windows/building#supporting-windows-ui-guidelines
 //https://docs.flutter.dev/platform-integration/windows/building#msix-packaging

@@ -1,5 +1,5 @@
-import 'package:groups_v4/algorithm/classes.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/algorithm/classes.dart';
+import 'package:groups_app/utils.dart';
 
 Set<Item> performAlgorithm(Items items) {
   Set<Item> unassignable = {};

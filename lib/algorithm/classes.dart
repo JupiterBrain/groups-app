@@ -1,4 +1,4 @@
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/utils.dart';
 
 class Group implements Comparable<Group>, CSVSerializable {
   late final int id;

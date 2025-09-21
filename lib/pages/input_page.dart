@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
-import 'package:groups_v4/controller.dart';
-import 'package:groups_v4/models/input_page/algorithm_extended_options_card.dart';
-import 'package:groups_v4/models/input_page/algorithm_parameters_pane.dart';
-import 'package:groups_v4/models/input_page/algorithm_start_button.dart';
-import 'package:groups_v4/models/input_page/groups_input_card.dart';
-import 'package:groups_v4/components/reactive/reactive_conditional.dart';
-import 'package:groups_v4/models/input_page/items_input_card.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/controller.dart';
+import 'package:groups_app/models/input_page/algorithm_extended_options_card.dart';
+import 'package:groups_app/models/input_page/algorithm_parameters_pane.dart';
+import 'package:groups_app/models/input_page/algorithm_start_button.dart';
+import 'package:groups_app/models/input_page/groups_input_card.dart';
+import 'package:groups_app/components/reactive/reactive_conditional.dart';
+import 'package:groups_app/models/input_page/items_input_card.dart';
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});

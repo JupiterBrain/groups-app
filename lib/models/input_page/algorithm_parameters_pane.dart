@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/reactive/reactive_checkbox_list_tile.dart';
-import 'package:groups_v4/components/reactive/reactive_conditional.dart';
-import 'package:groups_v4/components/reactive/reactive_int_field.dart';
-import 'package:groups_v4/controller.dart';
+import 'package:groups_app/components/reactive/reactive_checkbox_list_tile.dart';
+import 'package:groups_app/components/reactive/reactive_conditional.dart';
+import 'package:groups_app/components/reactive/reactive_int_field.dart';
+import 'package:groups_app/controller.dart';
 
 class AlgorithmParametersPane extends StatelessWidget {
   const AlgorithmParametersPane({super.key});

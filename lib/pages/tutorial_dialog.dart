@@ -14,8 +14,8 @@ class TutorialDialog extends StatelessWidget {
           Text(
             'Das integrierte Tutorial befindet sich derzeit noch in '
             'Entwicklung, bitte konsultieren Sie die offizielle Dokumentation  '
-            'unter https://JupiterBrain.github.io/groups_v4 oder '
-            'https://github.com/JupiterBrain/groups_v4',
+            'unter https://JupiterBrain.github.io/groups-app oder '
+            'https://github.com/JupiterBrain/groups-app',
           ),
           SizedBox(height: 16),
         ],

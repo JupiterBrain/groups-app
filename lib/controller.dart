@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:groups_v4/algorithm/algorithm.dart' as algorithm;
-import 'package:groups_v4/algorithm/parser.dart' as parser;
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/algorithm/algorithm.dart' as algorithm;
+import 'package:groups_app/algorithm/parser.dart' as parser;
+import 'package:groups_app/utils.dart';
 
 var viewController = ViewController();
 

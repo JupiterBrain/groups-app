@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/utils.dart';
 
 class RConditional extends StatelessWidget {
   final RV<bool> value;

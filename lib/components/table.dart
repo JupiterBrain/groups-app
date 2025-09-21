@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/utils.dart';
 
 class SpreadsheetTable extends StatelessWidget {
   final Spreadsheet spreadsheet;

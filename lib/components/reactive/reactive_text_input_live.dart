@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:groups_v4/components/reactive/reactive_wrapper.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/utils.dart';
 
 class RTextInputLive extends StatelessWidget {
   final RV<String> value;

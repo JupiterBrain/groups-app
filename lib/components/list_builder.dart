@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:groups_v4/utils.dart';
+import 'package:groups_app/utils.dart';
 
 class ListBuilder extends StatelessWidget {
   const ListBuilder({super.key, required this.list, required this.builder});
