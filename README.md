@@ -7,11 +7,28 @@ The one with the assignemnts.
 Download the latest version of the app [here](https://github.com/JupiterBrain/groups-app/releases/latest).\
 If you have questions on how to download or install the app, visit the [documentation](https://JupiterBrain.github.io/groups-app/download).
 
-### Downloading on Linux
+### Installation on Windows
 
-After downloading the .AppImage, you need to make it executable, after which you can, well, execute it like a normal application.\
-Upon first execution, the app will also create a .desktop link.
+After downloading the `.msix` installer open it from the explorer with a double click and follow the instructions of the installation wizard.
+
+### Installation on Linux
+
+You will need [flatpak](https://https://flatpak.org/setup/) installed on your System.
+
+After downloading the `.flatpak` bundle of the newest version, open a terminal in the directory of the bundle and run:
+
+```sh
+flatpak install --user groups-app-4.x.x-linux-amd64.flatpak
+```
+
+The .desktop entry should be visible in your distros native menue.
+If it isn't try rebooting your system or refreshing the desktop database with:
+
+```sh
+update-desktop-database
+```
+
 
 ## Tutorial
 
-If you are unsure, how to use the app, consult the in-app tutorial, or visit the [documentation](https://JupiterBrain.gihub.io/groups-app/tutorial).
+If you are unsure, how to use the app, visit the [documentation](https://JupiterBrain.gihub.io/groups-app/tutorial).
