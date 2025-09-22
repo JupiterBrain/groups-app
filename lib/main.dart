@@ -37,6 +37,8 @@ void main() async {
     await windowManager.focus();
   });
 
+  windowManager.addListener(MyWindowListener());
+
   runApp(const MyApp());
 
   checkForUpdate(scaffoldMessengerKey);
@@ -63,5 +65,12 @@ class MyApp extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class MyWindowListener with WindowListener {
+  @override
+  void onWindowClose() {
+    exit(0);
   }
 }
