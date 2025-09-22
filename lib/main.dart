@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:groups_app/update_checker.dart';
 import 'package:groups_app/pages/input_page.dart';
 import 'package:groups_app/pages/output_page.dart';
@@ -23,16 +22,6 @@ final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() {
   runApp(const MyApp());
-
-  doWhenWindowReady(() {
-    const initialSize = Size(450, 250);
-    appWindow.minSize = initialSize;
-    appWindow.size = initialSize;
-    appWindow.alignment = Alignment.center;
-    appWindow.title = "Groups";
-    appWindow.show();
-  });
-
   checkForUpdate(scaffoldMessengerKey);
 }
 
