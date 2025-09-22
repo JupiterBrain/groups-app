@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:groups_app/update_checker.dart';
 import 'package:groups_app/pages/input_page.dart';
 import 'package:groups_app/pages/output_page.dart';
@@ -20,8 +21,24 @@ import 'package:groups_app/pages/tutorial_dialog.dart';
 
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await windowManager.ensureInitialized();
+
+  const windowOptions = WindowOptions(
+    minimumSize: Size(450, 250),
+    center: true,
+    title: "Groups",
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(const MyApp());
+
   checkForUpdate(scaffoldMessengerKey);
 }
 
