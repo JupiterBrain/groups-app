@@ -11,10 +11,6 @@ import 'package:groups_app/pages/tutorial_dialog.dart';
 //https://docs.flutter.dev/platform-integration/windows/building#msix-packaging
 //https://github.com/fastforgedev/fastforge
 
-//dart:package msix
-//dart:package flutter_to_debian
-
-//add proper tutorials
 //annotate all instances of immutable datastructures
 //minGroupSize
 //balanceGroupSizes
