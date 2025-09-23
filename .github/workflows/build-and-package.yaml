@@ -36,27 +36,27 @@ jobs:
             echo "version_ok=false" >> $GITHUB_OUTPUT
           fi
 
-  build-windows:
-    needs: check-version
-    if: needs.check-version.outputs.version_ok == 'true'
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Installing flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.3'
-      - name: Building app bundle
-        run: | 
-          flutter pub get
-          flutter build windows --release
-      - name: Packaging bundle
-        run: dart run msix:create
-      - name: Uploading installer
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.msix
+  # build-windows:
+  #   needs: check-version
+  #   if: needs.check-version.outputs.version_ok == 'true'
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Installing flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: '3.22.3'
+  #     - name: Building app bundle
+  #       run: | 
+  #         flutter pub get
+  #         flutter build windows --release
+  #     - name: Packaging bundle
+  #       run: dart run msix:create
+  #     - name: Uploading installer
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         files: dist/*.msix
 
   # build-macos:
   #   needs: check-version
@@ -109,6 +109,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y flatpak flatpak-builder ninja-build cmake pkg-config libgtk-3-dev
       - name: Installing flatpak dependecies
         run: |
+          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           yes | flatpak install flathub org.freedesktop.Sdk/x86_64/24.08
           yes | flatpak install flathub org.freedesktop.Platform/x86_64/24.08
       - name: Building app bundle
