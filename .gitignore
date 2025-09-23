@@ -46,3 +46,7 @@ app.*.map.json
 
 .vscode
 dist
+.flatpak-builder
+build-dir
+repo
+*.flatpak
