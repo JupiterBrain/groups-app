@@ -97,7 +97,7 @@ msix_config:
   display_name: Groups
   publisher_display_name: JupiterBrain
   identity_name: jupiterbrain.groups.groups
-  logo_path: .\installer\icon.png
+  logo_path: .\installer\groups-app-icon.png
   capabilities: internetClient
   execution_alias: groups-app
   output_name: groups-app-4.0.0-windows-x86
