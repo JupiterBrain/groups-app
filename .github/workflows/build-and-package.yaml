@@ -19,6 +19,13 @@ permissions:
 # $ flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
 # $ flatpak build-bundle repo groups-app.flatpak io.github.JupiterBrain.groups-app stable
 
+# ZSH Funktion für Bildumwandelung
+# $ png2ico () {
+#     local i="${1}" o="${2:-${1:r}.ico}" s="${png2ico_size:-256}"
+#     convert -resize x${s} -gravity center -crop ${s}x${s}+0+0 "$i" -colors 256 -background transparent "$o"
+# }
+# $ png2ico installer/groups-app-icon.png
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -51,8 +58,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Install inno-setup
-        run: choco install innosetup -y
       - name: Installing flutter
         uses: subosito/flutter-action@v2
         with:
@@ -62,7 +67,7 @@ jobs:
           flutter pub get
           flutter build windows --release
       - name: Packaging bundle
-        run: dart run inno_bundle --release
+        run: dart run inno_bundle:build --release --no-app --no-install-inno
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
@@ -110,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
-      options: privileged
+      options: --privileged
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5

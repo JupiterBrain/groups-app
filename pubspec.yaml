@@ -97,7 +97,7 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 inno_bundle:
-  id: io-github-jupiterbrain-groups-app
+  id: 830b5512-61ce-5c23-8fd3-36536f79a00b
   name: Groups
   publisher: JupiterBrain
   url: https://JupiterBrain.github.io/groups-app
