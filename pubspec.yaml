@@ -19,8 +19,6 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
 version: 4.0.0 
-# ! Remember to change version number 
-# ! of MSIX installer output file name below
 
 
 environment:
@@ -38,7 +36,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  # cupertino_icons: ^1.0.8
   window_manager: ^0.4.3
   http: ^1.5.0
   url_launcher: ^6.3.1
@@ -54,7 +52,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  msix: ^3.16.12
+  inno_bundle: ^0.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,12 +96,14 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-msix_config:
-  display_name: Groups
-  publisher_display_name: JupiterBrain
-  identity_name: jupiterbrain.groups.groups
-  logo_path: .\installer\groups-app-icon.png
-  capabilities: internetClient
-  execution_alias: groups-app
-  output_name: groups-app-4.0.0-windows-x86
-  output_path: .\dist
+inno_bundle:
+  id: io-github-jupiterbrain-groups-app
+  name: Groups
+  publisher: JupiterBrain
+  url: https://JupiterBrain.github.io/groups-app
+  support_url: https://JupiterBrain.github.io/groups-app/support
+  updates_url: https://github.com/JupiterBrain/groups-app/releases/latest
+  installer_icon: .\installer\groups-app-icon.ico
+  languages: 
+    - german
+  admin: false

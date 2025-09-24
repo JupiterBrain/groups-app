@@ -8,13 +8,16 @@ permissions:
   contents: write
 
 
-# Problems: 
-# 1 - Kein Linux ARM-Build (lösbar)
+# Probleme: 
+# 1 - Kein Linux ARM-Build (kostenloser arm64 runner in public repos; https://github.com/flatpak/flatpak-github-actions#multi-arch-build-using-public-arm64-runners)
 # 2 - Kein MacOS x86-Build (nicht lösbar)
-# 2 - Benötigte Dependecies?
 
-# sudo apt-get update && sudo apt-get install clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+# Manual dependency installation
+# $ sudo apt-get update && sudo apt-get install clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
 
+# Manual .flatpak build
+# $ flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
+# $ flatpak build-bundle repo groups-app.flatpak io.github.JupiterBrain.groups-app stable
 
 jobs:
   check-version:
@@ -22,7 +25,12 @@ jobs:
     outputs:
       version_ok: ${{ steps.check.outputs.version_ok }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            pubspec.yaml
+            io.github.JupiterBrain.groups-app.json
+          sparse-checkout-cone-mode: false
       - id: check
         run: |
           TAG=${{ github.event.release.tag_name }} && TAG=${TAG:1}
@@ -36,27 +44,29 @@ jobs:
             echo "version_ok=false" >> $GITHUB_OUTPUT
           fi
 
-  # build-windows:
-  #   needs: check-version
-  #   if: needs.check-version.outputs.version_ok == 'true'
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Installing flutter
-  #       uses: subosito/flutter-action@v2
-  #       with:
-  #         flutter-version: '3.22.3'
-  #     - name: Building app bundle
-  #       run: | 
-  #         flutter pub get
-  #         flutter build windows --release
-  #     - name: Packaging bundle
-  #       run: dart run msix:create
-  #     - name: Uploading installer
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         files: dist/*.msix
+  build-windows:
+    needs: check-version
+    if: needs.check-version.outputs.version_ok == 'true'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Install inno-setup
+        run: choco install innosetup -y
+      - name: Installing flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.3'
+      - name: Building app bundle
+        run: | 
+          flutter pub get
+          flutter build windows --release
+      - name: Packaging bundle
+        run: dart run inno_bundle --release
+      - name: Uploading installer
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./build/windows/x64/installer/Release/*.exe
 
   # build-macos:
   #   needs: check-version
@@ -64,7 +74,7 @@ jobs:
   #   runs-on: macos-latest
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v5
   #     - name: Installing flutter
   #       uses: subosito/flutter-action@v2
   #       with:
@@ -98,34 +108,29 @@ jobs:
     needs: check-version
     if: needs.check-version.outputs.version_ok == 'true'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      options: privileged
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
       - name: Installing flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.3'
-      - name: Installing Dependecies
-        run: sudo apt-get update && sudo apt-get install -y flatpak flatpak-builder ninja-build cmake pkg-config libgtk-3-dev
-      - name: Installing flatpak dependecies
+      - name: Installing Dependencies
         run: |
-          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          yes | flatpak install flathub org.freedesktop.Sdk/x86_64/24.08
-          yes | flatpak install flathub org.freedesktop.Platform/x86_64/24.08
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev
       - name: Building app bundle
         run: | 
           flutter pub get
           flutter build linux --release
-      - name: Updating packaging manifest version tag
-        run: |
-          TAG=${{ github.event.release.tag_name }} && TAG=${TAG:1}
-          cat io.github.JupiterBrain.groups-app.json | head -n -1 > temp
-          echo ",\"tags\": [\"$TAG\"]}" >> temp
-          mv temp io.github.JupiterBrain.groups-app.json
       - name: Packaging bundle 
-        run: | 
-          flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
-          flatpak build-bundle build-dir groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak io.github.JupiterBrain.groups-app stable
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak
+          manifest-path: io.github.JupiterBrain.groups-app.json
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
