@@ -52,7 +52,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  inno_bundle: ^0.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,15 +94,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-inno_bundle:
-  id: 830b5512-61ce-5c23-8fd3-36536f79a00b
-  name: Groups
-  publisher: JupiterBrain
-  url: https://JupiterBrain.github.io/groups-app
-  support_url: https://JupiterBrain.github.io/groups-app/support
-  updates_url: https://github.com/JupiterBrain/groups-app/releases/latest
-  installer_icon: .\installer\groups-app-icon.ico
-  languages: 
-    - german
-  admin: false
