@@ -41,6 +41,7 @@ jobs:
           sparse-checkout: |
             pubspec.yaml
             io.github.JupiterBrain.groups-app.json
+            installer/setup.iss
           sparse-checkout-cone-mode: false
       - id: check
         run: |
