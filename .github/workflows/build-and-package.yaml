@@ -26,6 +26,10 @@ permissions:
 # }
 # $ png2ico installer/groups-app-icon.png
 
+# Videos
+# Inno Setup: https://youtu.be/GJUmfkn76h0  
+# MacOS .dmg: https://youtu.be/EniblIsf8tU
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -41,13 +45,14 @@ jobs:
       - id: check
         run: |
           TAG=${{ github.event.release.tag_name }} && TAG=${TAG:1}
-          VERSION=$(grep '^version:' pubspec.yaml) && VERSION=${VERSION:9:-1}
-          VERSION2=$(grep '\"tags\": \[\"' io.github.JupiterBrain.groups-app.json | cut -d '"' -f 4)
-          if [ "$TAG" = "$VERSION" ] && [ "$TAG" = "$VERSION2" ]; then
+          VERSION_PUBSPEC=$(grep '^version:' pubspec.yaml) && VERSION_PUBSPEC=${VERSION_PUBSPEC:9:-1}
+          VERSION_FLATPAK_MANIFEST=$(grep '\"tags\": \[\"' io.github.JupiterBrain.groups-app.json | cut -d '"' -f 4)
+          VERSION_ISS=$(grep "#define MyAppVersion \"" installer/setup.iss); VERSION_ISS=${VERSION_ISS:22:-1}
+          if [ "$TAG" = "$VERSION_PUBSPEC" ] && [ "$TAG" = "$VERSION_FLATPAK_MANIFEST" ] && [ "$TAG" = "$VERSION_ISS" ]; then
             echo "version_ok=true" >> $GITHUB_OUTPUT
           else
             echo "❌ Error: Tag Version does not match program version."
-            echo "Check pubspec.yaml version tag and msix output file name and check flatpak config .json file."
+            echo "Check pubspec.yaml, manifest.json and setup.iss version tags."
             echo "version_ok=false" >> $GITHUB_OUTPUT
           fi
 
@@ -67,7 +72,9 @@ jobs:
           flutter pub get
           flutter build windows --release
       - name: Packaging bundle
-        run: dart run inno_bundle:build --release --no-app --no-install-inno
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: installer/setup.iss
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
@@ -125,8 +132,8 @@ jobs:
           flutter-version: '3.22.3'
       - name: Installing Dependencies
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y ninja-build libgtk-3-dev
+          apt-get update -y
+          apt-get install -y ninja-build libgtk-3-dev
       - name: Building app bundle
         run: | 
           flutter pub get
