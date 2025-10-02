@@ -76,6 +76,7 @@ jobs:
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
           path: installer/setup.iss
+      - run: tree .
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
@@ -127,6 +128,9 @@ jobs:
     needs: check-version
     if: needs.check-version.outputs.version_ok == 'true'
     runs-on: ubuntu-latest
+  # container:
+  #   image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+  #   options: --privileged
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
