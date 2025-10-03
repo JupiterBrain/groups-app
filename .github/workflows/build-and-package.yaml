@@ -78,7 +78,7 @@ jobs:
           flutter build windows --release
       - name: Packaging bundle
         run: |
-          iscc /O"dist" /F"groups-app-${{ github.event.release.tag_name }}-windows-x86-arm64-compatible" "installler/setup.iss"
+          iscc /O"dist" /F"groups-app-${{ github.event.release.tag_name }}-windows-x86-arm64-compatible" "installer/setup.iss"
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
@@ -146,12 +146,13 @@ jobs:
         run: | 
           flutter pub get
           flutter build linux --release
-      - name: Packaging bundle 
-        run: |
-          flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
-          flatpak build-bundle repo groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak io.github.JupiterBrain.groups-app stable
+      - name: Make flatpak app
+        run: flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
+      - name: Build .flatpak bundle
+        run: flatpak build-bundle repo groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak io.github.JupiterBrain.groups-app stable
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
           files: |
+            *.flatpak
             dist/*.flatpak
