@@ -78,7 +78,7 @@ jobs:
           flutter build windows --release
       - name: Packaging bundle
         run: |
-          iscc /O"dist" /F"groups-app-${{ github.event.release.tag_name }}-windows-x86-arm64-compatible" "installer/setup.iss"
+          iscc /O"dist" /F"groups-app-${{ github.event.release.tag_name }}-windows-x86-arm64-compatible" "setup.iss"
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
