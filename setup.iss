@@ -32,7 +32,7 @@ DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users).
 PrivilegesRequired=lowest
 OutputBaseFilename=groups-app-setup
-SetupIconFile=..\installer\groups-app-icon.ico
+SetupIconFile=installer\groups-app-icon.ico
 SolidCompression=yes
 WizardStyle=modern
 
@@ -44,8 +44,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 ; Program Files:
-Source: "..\build\windows\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
-Source: "..\installer\groups-app-icon.ico"; DestDir: "{app}"; Flags: ignoreversion  ; App Icon
+Source: "build\windows\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
+Source: "installer\groups-app-icon.ico"; DestDir: "{app}"; Flags: ignoreversion  ; App Icon
 ; Source: "windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
