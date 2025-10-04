@@ -76,6 +76,7 @@ jobs:
         run: | 
           flutter pub get
           flutter build windows --release
+      - run: tree /F
       - name: Packaging bundle
         run: |
           iscc /O"dist" /F"groups-app-${{ github.event.release.tag_name }}-windows-x86-arm64-compatible" "setup.iss"
@@ -84,75 +85,74 @@ jobs:
         with:
           files: ./dist/*.exe
 
-  # build-macos:
-  #   needs: check-version
-  #   if: needs.check-version.outputs.version_ok == 'true'
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v5
-  #     - name: Installing flutter
-  #       uses: subosito/flutter-action@v2
-  #       with:
-  #         flutter-version: '3.22.3'
-  #     - name: Installing Dependecies
-  #       run: brew install create-dmg
-  #     - name: Building app bundle
-  #       run: | 
-  #         flutter pub get
-  #         flutter build macos --release
-  #     - name: Packaging bundle 
-  #       run: |
-  #         mkdir -p build/macos/Release/dmg
-  #         create-dmg \
-  #           --volname "Groups" \
-  #           --background "installer/groups-app-icon.png" \
-  #           --window-pos 200 120 \
-  #           --window-size 600 400 \
-  #           --app-drop-link 425 150 \
-  #           --hdiutil-verbose \
-  #           groups-app-${{ github.event.release.tag_name }}-macos-arm64.dmg \
-  #           build/macos/Build/Products/Release/groups_app.app
-  #     - name: Uploading installer
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         files: |
-  #           dist/*.dmg
-  #           *.dmg
-
-  # 
-
-  build-linux:
+  build-macos:
     needs: check-version
     if: needs.check-version.outputs.version_ok == 'true'
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v5
       - name: Installing flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.3'
-      - name: Installing Dependencies
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y ninja-build libgtk-3-dev
-          sudo apt install -y flatpak flatpak-builder
-          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          sudo flatpak install -y org.freedesktop.Sdk/x86_64/24.08
-          sudo flatpak install -y org.freedesktop.Platform/x86_64/24.08
-          sudo flatpak install -y flathub org.freedesktop.appstream-glib
+      - name: Installing Dependecies
+        run: brew install create-dmg
       - name: Building app bundle
         run: | 
           flutter pub get
-          flutter build linux --release
-      - name: Make flatpak app
-        run: flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
-      - name: Build .flatpak bundle
-        run: flatpak build-bundle repo groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak io.github.JupiterBrain.groups-app stable
+          flutter build macos --release
+      - name: Packaging bundle 
+        run: |
+          mkdir -p build/macos/Release/dmg
+          create-dmg \
+            --volname "Groups" \
+            --background "installer/groups-app-icon.png" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --app-drop-link 425 150 \
+            --hdiutil-verbose \
+            groups-app-${{ github.event.release.tag_name }}-macos-arm64.dmg \
+            build/macos/Build/Products/Release/groups_app.app
       - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            *.flatpak
-            dist/*.flatpak
+            dist/*.dmg
+            *.dmg
+            build/macos/Release/dmg/*.dmg
+
+  # build-linux:
+  #   needs: check-version
+  #   if: needs.check-version.outputs.version_ok == 'true'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v5
+  #     - name: Installing flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: '3.22.3'
+  #     - name: Installing Dependencies
+  #       run: |
+  #         sudo apt-get update -y
+  #         sudo apt-get install -y ninja-build libgtk-3-dev
+  #         sudo apt install -y flatpak flatpak-builder
+  #         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #         sudo flatpak install -y org.freedesktop.Sdk/x86_64/24.08
+  #         sudo flatpak install -y org.freedesktop.Platform/x86_64/24.08
+  #         sudo flatpak install -y flathub org.freedesktop.appstream-glib
+  #     - name: Building app bundle
+  #       run: | 
+  #         flutter pub get
+  #         flutter build linux --release
+  #     - name: Make flatpak app
+  #       run: flatpak-builder --force-clean --repo=repo build-dir io.github.JupiterBrain.groups-app.json
+  #     - name: Build .flatpak bundle
+  #       run: flatpak build-bundle repo groups-app-${{ github.event.release.tag_name }}-linux-amd64.flatpak io.github.JupiterBrain.groups-app stable
+  #     - name: Uploading installer
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         files: |
+  #           *.flatpak
+  #           dist/*.flatpak
