@@ -9,7 +9,15 @@ If you have questions on how to download or install the app, visit the [document
 
 ### Installation on Windows
 
-After downloading the `.msix` installer open it from the explorer with a double click and follow the instructions of the installation wizard.
+After downloading the `.exe` installer, open it from the explorer with a double click and follow the instructions of the installation wizard.
+
+The application is compiled for x86_64 but is compatible with arm64 via emulation.
+
+### Installation on MacOS
+
+Download the `.dmg` archive, execute it and follow the instructions of the installation wizard.
+
+There is no native installer provided for the older amd64/x86_64 MacOS.
 
 ### Installation on Linux
 
@@ -32,9 +40,9 @@ After downloading the `.flatpak` bundle of the newest version, open a terminal i
 flatpak install --user groups-app-4.x.x-linux-amd64.flatpak
 ```
 
-The .desktop entry should be visible in your distros native menue.
+The app should be visible in your distros native menue.
 
-If it isn't try logging out and back in again or reboot you system.
+If it isn't, try logging out and back in again or reboot you system.
 
 
 ## Tutorial
