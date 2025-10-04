@@ -85,43 +85,6 @@ jobs:
         with:
           files: ./dist/*.exe
 
-#  build-macos:
-#    needs: check-version
-#    if: needs.check-version.outputs.version_ok == 'true'
-#    runs-on: macos-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v5
-#      - name: Installing flutter
-#        uses: subosito/flutter-action@v2
-#        with:
-#          flutter-version: '3.22.3'
-#      - name: Installing Dependecies
-#        run: brew install create-dmg
-#      - name: Building app bundle
-#        run: | 
-#          flutter pub get
-#          flutter build macos --release
-#      - name: Packaging bundle 
-#        run: |
-#          mkdir -p build/macos/Release/dmg
-#         create-dmg \
-#            --volname "Groups" \
-#            --background "installer/groups-app-icon.png" \
-#            --window-pos 200 120 \
-#            --window-size 600 400 \
-#            --app-drop-link 425 150 \
-#            --hdiutil-verbose \
-#            groups-app-${{ github.event.release.tag_name }}-macos-arm64.dmg \
-#            build/macos/Build/Products/Release/groups_app.app
-#      - name: Uploading installer
-#        uses: softprops/action-gh-release@v2
-#        with:
-#          files: |
-#            dist/*.dmg
-#            *.dmg
-#            build/macos/Release/dmg/*.dmg
-
   build-macos:
     needs: check-version
     if: needs.check-version.outputs.version_ok == 'true'
@@ -129,34 +92,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Install Flutter
+      - name: Installing flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.3'
-
-      - name: Install Dependencies
+      - name: Installing Dependecies
         run: brew install create-dmg
-
-      - name: Build macOS x86_64
-        run: |
+      - name: Building app bundle
+        run: | 
           flutter pub get
-          flutter build macos --release --target-platform=darwin-x64
-
-      - name: Build macOS arm64
+          flutter build macos --release
+      - name: Packaging bundle 
         run: |
-          flutter build macos --release --target-platform=darwin-arm64
-
-      - name: Merge into Universal Binary
-        run: |
-          lipo -create \
-            build/macos/Build/Products/Release-x64/groups_app.app/Contents/MacOS/groups_app \
-            build/macos/Build/Products/Release-arm64/groups_app.app/Contents/MacOS/groups_app \
-            -output build/macos/Build/Products/Release/groups_app.app/Contents/MacOS/groups_app
-
-      - name: Create DMG
-        run: |
-          mkdir -p dist
           create-dmg \
             --volname "Groups" \
             --background "installer/groups-app-icon.png" \
@@ -164,16 +111,38 @@ jobs:
             --window-size 600 400 \
             --app-drop-link 425 150 \
             --hdiutil-verbose \
-            dist/groups-app-${{ github.event.release.tag_name }}-macos-universal.dmg \
-            build/macos/Build/Products/Release/groups_app.app
-
-      - name: Upload installer
+            groups-app-${{ github.event.release.tag_name }}-macos-arm64.dmg \
+            build/macos/Build/Products/Release/groups-app.app
+      - name: Uploading installer
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/*.dmg
             *.dmg
-            build/macos/Release/dmg/*.dmg
+
+  # build-macos:
+  #   needs: check-version
+  #   if: needs.check-version.outputs.version_ok == 'true'
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v5
+  #     - name: Installing flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: '3.22.3'
+  #     - name: Installing Dependecies
+  #       run: npm i -g appdmg
+  #     - name: Building app bundle
+  #       run: | 
+  #         flutter pub get
+  #         flutter build macos --release
+  #     - name: Packaging bundle 
+  #       run: appdmg ./macos-dmg-config.json ./groups-app-${{ github.event.release.tag_name }}-macos-arm64.dmg
+  #     - name: Uploading installer
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         files: |
+  #           *.dmg
 
   # build-linux:
   #   needs: check-version

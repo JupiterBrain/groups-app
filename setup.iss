@@ -45,7 +45,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 ; Program Files:
 Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
-Source: "installer\groups-app-icon.ico"; DestDir: "{app}"; Flags: ignoreversion  ; App Icon
+; App Icon
+Source: "installer\groups-app-icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; Source: "windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
