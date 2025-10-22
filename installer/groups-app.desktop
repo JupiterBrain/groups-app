@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Groups
-Exec=groups-app
-Icon=io.github.JupiterBrain.groups-app
-Terminal=false
-Categories=Utility
