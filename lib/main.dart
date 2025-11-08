@@ -15,8 +15,6 @@ import 'package:groups_app/pages/tutorial_dialog.dart';
 //minGroupSize
 //balanceGroupSizes
 
-//TODO about dialog
-
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() async {

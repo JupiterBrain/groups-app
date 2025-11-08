@@ -10,11 +10,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   bool allowEmpty = false,
   bool allowExcess = false,
 }) {
-  int? Function(String) capacityProvider = defaultCapacity == null
-      ? (field) => int.tryParse(field)
-      : (_) => defaultCapacity;
-
-  var (groups, groupsErrors) = parseGroups(groupsTable, capacityProvider);
+  var (groups, groupsErrors) = parseGroups(groupsTable, defaultCapacity);
   var (items, itemsErrors) = parseItems(nrOfChoices, itemsTable, groups,
       allowDuplicates: allowDuplicates, allowEmpty: allowEmpty);
 
@@ -37,10 +33,13 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 
 (Map<String, Group>, Strings) parseGroups(
   TRows groupsTable,
-  int? Function(String) capacityProvider,
+  int? defaultCapacity,
 ) {
   Strings groupsErrors = [];
   Map<String, Group> groups = {};
+  int? Function(String) capacityProvider = defaultCapacity == null
+      ? (field) => int.tryParse(field)
+      : (_) => defaultCapacity;
 
   void error(String error) {
     groupsErrors.add(error);
@@ -49,12 +48,7 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   void parseGroup(Strings row, int id) {
     var hadError = false;
 
-    if (row.length < 2) {
-      return error("Error in row $id: A group must have columns for at least "
-          "an identifier and a capacity.");
-    }
-
-    var identifier = row[0];
+    var identifier = row.first;
 
     if (groups.containsKey(identifier)) {
       error("Error in row $id: A groups identifier must be unique.");
@@ -73,9 +67,13 @@ Result<(Groups, Items), (Strings, Strings)> parse(
     }
   }
 
-  for (int i = 0; i < groupsTable.length; i++) {
-    var row = groupsTable[i];
-    parseGroup(row, i + 1);
+  if (defaultCapacity != null && groupsTable.first.length < 2) {
+    error("Groups Table must have a column for capacities.");
+  } else {
+    for (int i = 0; i < groupsTable.length; i++) {
+      var row = groupsTable[i];
+      parseGroup(row, i + 1);
+    }
   }
 
   return (groups, groupsErrors);

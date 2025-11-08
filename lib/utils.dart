@@ -140,7 +140,7 @@ class Spreadsheet {
         .toList(); */
 
   static TRows clipboardToSpreadsheet(String data) {
-    const String fieldDeliminator = ',';
+    const String fieldDeliminator = '\t';
 
     TRows table = [];
     Strings row = [];
@@ -273,7 +273,7 @@ extension Blank on String {
 }
 
 extension Sum<T extends num> on Iterable<T> {
-  T sum() => reduce((sum, curr) => sum + curr as T);
+  T sum() => fold(0 as T, (sum, curr) => sum + curr as T);
 }
 
 // overridable <= >= ~ - - + < > >>> >> ~/
