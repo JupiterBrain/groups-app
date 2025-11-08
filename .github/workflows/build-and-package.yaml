@@ -189,7 +189,9 @@ jobs:
           flutter pub get
           flutter build linux --release
       - name: Make flatpak app
-        run: flatpak-builder --force-clean --repo=repo build-dir installer/io.github.JupiterBrain.groups-app.json
+        run: |
+          sed -i 's/x64/arm64/g' installer/io.github.JupiterBrain.groups-app.json
+          flatpak-builder --force-clean --repo=repo build-dir installer/io.github.JupiterBrain.groups-app.json
       - name: Build .flatpak bundle
         run: flatpak build-bundle repo groups-app-${{ github.event.release.tag_name }}-linux-arm64.flatpak io.github.JupiterBrain.groups-app stable
       - name: Uploading installer
