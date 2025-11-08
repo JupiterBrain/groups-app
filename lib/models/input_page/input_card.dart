@@ -6,6 +6,7 @@ import 'package:groups_app/components/reactive/reactive_wrapper.dart';
 import 'package:groups_app/components/table.dart';
 import 'package:groups_app/components/warning_container.dart';
 import 'package:groups_app/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InputCard extends StatelessWidget {
   final String titlePrefix;
@@ -13,6 +14,7 @@ class InputCard extends StatelessWidget {
   final RV<Spreadsheet?> table;
   final RV<Strings> errors;
   final String formatInfo;
+  final String anchor;
 
   const InputCard({
     required this.titlePrefix,
@@ -20,6 +22,7 @@ class InputCard extends StatelessWidget {
     required this.table,
     required this.errors,
     required this.formatInfo,
+    required this.anchor,
     super.key,
   });
 
@@ -55,10 +58,14 @@ class InputCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      //TODO tutorial/info
                       IconButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/tutorial'),
+                        onPressed: () async {
+                          final uri = Uri.parse(
+                              "https://JupiterBrain.github.io/groups-app/tutorial#$anchor");
+                          if (!await canLaunchUrl(uri)) return;
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                        },
                         icon: const Icon(Icons.info),
                       ),
                     ],

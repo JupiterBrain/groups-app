@@ -16,6 +16,7 @@ class ItemsInputCard extends StatelessWidget {
       errors: viewController.itemsErrors,
       formatInfo:
           "(insgesamt eindeutige) Identifikation | ... | Wahl 1 | ... | Wahl x",
+      anchor: "items-input",
     );
   }
 }

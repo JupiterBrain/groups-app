@@ -16,6 +16,7 @@ class GroupsInputCard extends StatelessWidget {
       errors: viewController.groupsErrors,
       formatInfo: "eindeutiger Identifikator | optionale Beschreibung | ... | "
           "Kapazität (/ globale Kapazität verwenden)",
+      anchor: "groups-input",
     );
   }
 }

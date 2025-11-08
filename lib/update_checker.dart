@@ -40,6 +40,7 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
       return;
     }
 
+    //FIXME Bestätigung wird nicht angezeigt
     key.currentState!.showSnackBar(
       const SnackBar(
         showCloseIcon: true,
