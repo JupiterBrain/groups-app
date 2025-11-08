@@ -166,11 +166,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-      - name: Installing flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.3'
-          cache: true
+      - name: Clone Flutter
+        run: |
+          # Shallow-clone Flutter to reduce download size
+          git clone --depth 1 --branch 3.22.3 https://github.com/flutter/flutter.git $RUNNER_TEMP/flutter
+
+          # Add Flutter to PATH
+          echo "$RUNNER_TEMP/flutter/bin" >> $GITHUB_PATH
+      - name: Install Flutter
+        run: flutter doctor
       - name: Installing Dependencies
         run: |
           sudo apt-get update -y
