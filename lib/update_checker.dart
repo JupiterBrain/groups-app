@@ -36,7 +36,7 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
     if (latestVersion == null) return;
 
     if (latestVersion.compareTo(localVersion) < 0) {
-      showUpdateDialog(key, localVersion, latestVersion, json['html_url']);
+      showUpdateDialog(key, localVersion, latestVersion);
       return;
     }
 
@@ -52,12 +52,8 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
   }
 }
 
-void showUpdateDialog(
-  GlobalKey<ScaffoldMessengerState> key,
-  String localVersion,
-  String latestVersion,
-  String url,
-) {
+void showUpdateDialog(GlobalKey<ScaffoldMessengerState> key,
+    String localVersion, String latestVersion) {
   key.currentState!.showSnackBar(
     SnackBar(
       showCloseIcon: true,
@@ -65,7 +61,8 @@ void showUpdateDialog(
       action: SnackBarAction(
         label: 'Jetzt installieren',
         onPressed: () async {
-          final uri = Uri.parse(url);
+          final uri =
+              Uri.parse("https://JupiterBrain.github.io/groups-app/update");
           if (!await canLaunchUrl(uri)) return;
           await launchUrl(uri, mode: LaunchMode.externalApplication);
         },
