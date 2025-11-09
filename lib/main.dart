@@ -12,6 +12,7 @@ import 'package:groups_app/pages/tutorial_dialog.dart';
 //https://github.com/fastforgedev/fastforge
 
 //annotate all instances of immutable datastructures
+//algorithm iterations/improve algorithm
 //minGroupSize
 //balanceGroupSizes
 

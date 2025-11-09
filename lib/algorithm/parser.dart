@@ -41,6 +41,8 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       ? (field) => int.tryParse(field)
       : (_) => defaultCapacity;
 
+  int offset = defaultCapacity == null ? 1 : 0;
+
   void error(String error) {
     groupsErrors.add(error);
   }
@@ -60,14 +62,14 @@ Result<(Groups, Items), (Strings, Strings)> parse(
       return error("Error in row $id: '${row.last}' is not a valid integer.");
     }
 
-    var description = row.sublist(1, row.length - 1);
+    var description = row.sublist(1, row.length - offset);
 
     if (!hadError) {
       groups[identifier] = Group(id, identifier, description, capacity);
     }
   }
 
-  if (defaultCapacity != null && groupsTable.first.length < 2) {
+  if (defaultCapacity == null && groupsTable.first.length < 2) {
     error("Groups Table must have a column for capacities.");
   } else {
     for (int i = 0; i < groupsTable.length; i++) {

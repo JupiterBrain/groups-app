@@ -168,15 +168,21 @@ class ViewController {
 
     RV.listen(
       [groupsInputHeadline],
-      () =>
+      () {
+        if ((~useDefaultCapacity)) {
           groupsOutputHeadline <<
-          [
-            "ID",
-            ...(~groupsInputHeadline)!
-                .sublist(0, (~groupsInputHeadline)!.length - 1),
-            "Größe",
-            (~groupsInputHeadline)!.last,
-          ],
+              ["ID", ...(~groupsInputHeadline)!, "Größe", "Kapazität"];
+        } else {
+          groupsOutputHeadline <<
+              [
+                "ID",
+                ...(~groupsInputHeadline)!
+                    .sublist(0, (~groupsInputHeadline)!.length - 1),
+                "Größe",
+                (~groupsInputHeadline)!.last,
+              ];
+        }
+      },
     );
 
     RV.listen(
