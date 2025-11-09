@@ -15,9 +15,9 @@ The application is compiled for x86_64 but is compatible with arm64 via emulatio
 
 ### Installation on MacOS
 
-Download the `.dmg` archive, execute it and follow the instructions of the installation wizard.
+Important Notice: The MacOS version is not yet available.
 
-There is no native installer provided for the older amd64/x86_64 MacOS.
+Download the `.dmg` archive, execute it and follow the instructions of the installation wizard.
 
 ### Installation on Linux
 
