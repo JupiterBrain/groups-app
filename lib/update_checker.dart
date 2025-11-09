@@ -30,7 +30,7 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
     }
 
     final json = jsonDecode(response.body);
-    debugPrint(json);
+
     final latestVersion = json['tag_name']?.toString();
 
     if (latestVersion == null) return;
@@ -40,7 +40,6 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
       return;
     }
 
-    //FIXME Bestätigung wird nicht angezeigt
     key.currentState!.showSnackBar(
       const SnackBar(
         showCloseIcon: true,
