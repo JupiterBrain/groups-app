@@ -46,7 +46,7 @@ jobs:
       - id: check
         run: |
           TAG=${{ github.event.release.tag_name }} && TAG=${TAG:1}
-          VERSION_PUBSPEC=$(grep '^version:' pubspec.yaml) && VERSION_PUBSPEC=${VERSION_PUBSPEC:9:-1}
+          VERSION_PUBSPEC=$(grep '^version:' pubspec.yaml) && VERSION_PUBSPEC=${VERSION_PUBSPEC:9}
           VERSION_FLATPAK_MANIFEST=$(grep '\"tags\": \[\"' installer/io.github.JupiterBrain.groups-app.json | cut -d '"' -f 4)
           VERSION_ISS=$(grep "#define MyAppVersion \"" installer/setup.iss); VERSION_ISS=${VERSION_ISS:22:-1}
           if [ "$TAG" = "$VERSION_PUBSPEC" ] && [ "$TAG" = "$VERSION_FLATPAK_MANIFEST" ] && [ "$TAG" = "$VERSION_ISS" ]; then
