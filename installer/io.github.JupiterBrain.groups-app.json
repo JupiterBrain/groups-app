@@ -5,7 +5,7 @@
     "sdk": "org.freedesktop.Sdk",
     "command": "groups-app",
     "branch": "stable",
-    "tags": ["4.0.0"],
+    "tags": ["4.0.1"],
     "finish-args": [
         "--share=network",
         "--share=ipc",

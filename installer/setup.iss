@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Groups"
-#define MyAppVersion "4.0.0"
+#define MyAppVersion "4.0.1"
 #define MyAppPublisher "JupiterBrain"
 #define MyAppURL "https://JupiterBrain.github.io/groups-app/"
 #define MyAppExeName "groups-app.exe"
