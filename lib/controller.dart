@@ -167,7 +167,10 @@ class ViewController {
     );
 
     RV.listen(
-      [groupsInputHeadline],
+      [
+        groupsInputHeadline,
+        useDefaultCapacity,
+      ],
       () {
         if ((~useDefaultCapacity)) {
           groupsOutputHeadline <<
@@ -186,7 +189,10 @@ class ViewController {
     );
 
     RV.listen(
-      [itemsInputHeadline],
+      [
+        itemsInputHeadline,
+        nrOfChoices,
+      ],
       () =>
           itemsOutputHeadline <<
           [
