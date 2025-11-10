@@ -31,11 +31,11 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
 
     final json = jsonDecode(response.body);
 
-    final latestVersion = json['tag_name']?.toString();
+    final latestVersion = json['tag_name']?.toString().substring(1);
 
     if (latestVersion == null) return;
 
-    if (latestVersion.compareTo(localVersion) < 0) {
+    if (latestVersion.compareTo(localVersion) > 0) {
       showUpdateDialog(key, localVersion, latestVersion);
       return;
     }
