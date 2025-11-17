@@ -13,6 +13,7 @@ import 'package:groups_app/pages/tutorial_dialog.dart';
 
 //annotate all instances of immutable datastructures
 //algorithm iterations/improve algorithm
+//FIXME algorithm iterations/improve algorithm
 //minGroupSize
 //balanceGroupSizes
 

@@ -93,7 +93,7 @@ class Item implements Comparable<Item>, CSVSerializable {
         "$id",
         ...description,
         "${assignedToIdx + 1}",
-        (assignedTo == null ? "-" : assignedTo!.identifier),
+        (assignedTo == null ? "unzugewiesen" : assignedTo!.identifier),
         ...choices.map((e) => e.identifier),
       ];
 
