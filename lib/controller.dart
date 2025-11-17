@@ -91,7 +91,8 @@ class ViewController {
     if (!~readyToStart) return;
 
     var unassignable = algorithm.performAlgorithm((~items)!);
-    algorithm.randomRemaining((~groups)!, unassignable);
+
+    if (~randomRemaining) algorithm.randomRemaining((~groups)!, unassignable);
 
     assignmentTable <<
         parser.assembleAssignmentTable((~items)!, (~itemsOutputHeadline)!);
