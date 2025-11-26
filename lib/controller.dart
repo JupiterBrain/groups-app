@@ -62,10 +62,13 @@ class ViewController {
   }
 
   void parseInput() {
-    if (~groupsInput == null || ~itemsInput == null) return;
+    var groupsInputLocal = ~groupsInput;
+    var itemsInputLocal = ~itemsInput;
+
+    if (groupsInputLocal == null || itemsInputLocal == null) return;
 
     var result = parser.parse(
-        ~nrOfChoices, (~groupsInput)!.rows, (~itemsInput)!.rows,
+        ~nrOfChoices, groupsInputLocal.rows, itemsInputLocal.rows,
         defaultCapacity: ~useDefaultCapacity ? ~defaultCapacity : null,
         allowDuplicates: ~allowDuplicates,
         allowEmpty: ~allowEmpty,
@@ -88,18 +91,30 @@ class ViewController {
   }
 
   void startAlgorithm(BuildContext context) {
-    if (!~readyToStart) return;
+    var groupsLocal = ~groups;
+    var itemsLocal = ~items;
+    var groupsOutputHeadlineLocal = ~groupsOutputHeadline;
+    var itemsOutputHeadlineLocal = ~itemsOutputHeadline;
 
-    var unassignable = algorithm.performAlgorithm((~items)!);
+    if (!~readyToStart ||
+        groupsLocal == null ||
+        itemsLocal == null ||
+        groupsOutputHeadlineLocal == null ||
+        itemsOutputHeadlineLocal == null) {
+      return;
+    }
 
-    if (~randomRemaining) algorithm.randomRemaining((~groups)!, unassignable);
+    var unassignable = algorithm.performAlgorithm(itemsLocal);
+
+    if (~randomRemaining) algorithm.randomRemaining(groupsLocal, unassignable);
 
     assignmentTable <<
-        parser.assembleAssignmentTable((~items)!, (~itemsOutputHeadline)!);
+        parser.assembleAssignmentTable(itemsLocal, itemsOutputHeadlineLocal);
     groupOverviewTable <<
-        parser.assembleGroupOverwiewTable((~groups)!, (~groupsOutputHeadline)!);
+        parser.assembleGroupOverwiewTable(
+            groupsLocal, groupsOutputHeadlineLocal);
     analysisTable <<
-        parser.assembleDiagnosticsTable((~groups)!, (~items)!, ~nrOfChoices);
+        parser.assembleDiagnosticsTable(groupsLocal, itemsLocal, ~nrOfChoices);
 
     readyToStart << false;
 
@@ -143,9 +158,11 @@ class ViewController {
       useDefaultCapacity,
       defaultCapacity,
     ], () {
-      if (~groupsInput == null) return;
+      var groupsInputLocal = ~groupsInput;
 
-      var groupsTable = Spreadsheet.from((~groupsInput)!)..prefixID();
+      if (groupsInputLocal == null) return;
+
+      var groupsTable = Spreadsheet.from(groupsInputLocal)..prefixID();
 
       if (~useDefaultCapacity) groupsTable.addGlobalCapacity(~defaultCapacity);
 
@@ -153,8 +170,10 @@ class ViewController {
     });
 
     RV.listen([itemsInput], () {
-      if (~itemsInput == null) return;
-      itemsTable << (Spreadsheet.from((~itemsInput)!)..prefixID());
+      var itemsInputLocal = ~itemsInput;
+
+      if (itemsInputLocal == null) return;
+      itemsTable << (Spreadsheet.from(itemsInputLocal)..prefixID());
     });
 
     RV.listen(
@@ -173,17 +192,21 @@ class ViewController {
         useDefaultCapacity,
       ],
       () {
+        var groupsInputHeadlineLocal = ~groupsInputHeadline;
+
+        if (groupsInputHeadlineLocal == null) return;
+
         if ((~useDefaultCapacity)) {
           groupsOutputHeadline <<
-              ["ID", ...(~groupsInputHeadline)!, "Größe", "Kapazität"];
+              ["ID", ...groupsInputHeadlineLocal, "Größe", "Kapazität"];
         } else {
           groupsOutputHeadline <<
               [
                 "ID",
-                ...(~groupsInputHeadline)!
-                    .sublist(0, (~groupsInputHeadline)!.length - 1),
+                ...groupsInputHeadlineLocal.sublist(
+                    0, groupsInputHeadlineLocal.length - 1),
                 "Größe",
-                (~groupsInputHeadline)!.last,
+                groupsInputHeadlineLocal.last,
               ];
         }
       },
@@ -194,17 +217,22 @@ class ViewController {
         itemsInputHeadline,
         nrOfChoices,
       ],
-      () =>
-          itemsOutputHeadline <<
-          [
-            "ID",
-            ...(~itemsInputHeadline)!
-                .sublist(0, (~itemsInputHeadline)!.length - ~nrOfChoices),
-            "k",
-            "Gruppe",
-            ...(~itemsInputHeadline)!
-                .sublist((~itemsInputHeadline)!.length - ~nrOfChoices),
-          ],
+      () {
+        var itemsInputHeadlineLocal = ~itemsInputHeadline;
+
+        if (itemsInputHeadlineLocal == null) return;
+
+        itemsOutputHeadline <<
+            [
+              "ID",
+              ...(~itemsInputHeadline)!
+                  .sublist(0, itemsInputHeadlineLocal.length - ~nrOfChoices),
+              "k",
+              "Gruppe",
+              ...(~itemsInputHeadline)!
+                  .sublist(itemsInputHeadlineLocal.length - ~nrOfChoices),
+            ];
+      },
     );
   }
 }
