@@ -26,13 +26,13 @@ class RTextInputLive extends StatelessWidget {
     return ReactiveWrapper(
       reactiveValues: [value],
       builder: (context) {
-        return TextField(
+        return wrapTextField(TextField(
           decoration: InputDecoration(labelText: label),
           controller: _controller,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           onChanged: (newValue) => value.value = newValue,
-        );
+        ));
       },
     );
   }

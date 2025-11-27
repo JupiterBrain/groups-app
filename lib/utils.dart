@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groups_app/algorithm/classes.dart';
 
@@ -329,3 +333,8 @@ class RV<T> {
 extension MakeReactive<T> on T {
   RV<T> get rv => RV(this);
 }
+
+// Workaround for https://github.com/flutter/flutter/issues/153560
+// This only affects Linux desktop builds and the wrapper should be removed when the issue is fixed.
+Widget wrapTextField(TextField field) =>
+    !kIsWeb && Platform.isLinux ? ExcludeSemantics(child: field) : field;

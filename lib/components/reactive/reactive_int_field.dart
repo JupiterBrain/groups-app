@@ -83,7 +83,7 @@ class _ReactiveIntInputValidatedState extends State<RIntField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return wrapTextField(TextField(
       controller: _controller,
       focusNode: _focusNode,
       keyboardType: TextInputType.number,
@@ -92,6 +92,6 @@ class _ReactiveIntInputValidatedState extends State<RIntField> {
         labelText: widget.label,
         errorText: _errorText,
       ),
-    );
+    ));
   }
 }
