@@ -6,14 +6,13 @@ import 'package:groups_app/update_checker.dart';
 import 'package:groups_app/pages/input_page.dart';
 import 'package:groups_app/pages/output_page.dart';
 
+//FIXME still doesn't work with newest flutter version (on linux mint) (Accessing text field results in program crash)
+// Fixed by disabling the virtual keyboard (accessibility settings)
 
 //https://docs.flutter.dev/platform-integration/windows/building#supporting-windows-ui-guidelines
-//https://docs.flutter.dev/platform-integration/windows/building#msix-packaging
-//https://github.com/fastforgedev/fastforge
 
 //annotate all instances of immutable datastructures
-//algorithm iterations/improve algorithm
-//FIXME algorithm iterations/improve algorithm
+//TODO algorithm iterations/improve algorithm
 //minGroupSize
 //balanceGroupSizes
 

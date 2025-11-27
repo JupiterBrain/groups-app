@@ -338,3 +338,13 @@ extension MakeReactive<T> on T {
 // This only affects Linux desktop builds and the wrapper should be removed when the issue is fixed.
 Widget wrapTextField(TextField field) =>
     !kIsWeb && Platform.isLinux ? ExcludeSemantics(child: field) : field;
+
+extension FirstWhereOrNull<T> on Iterable<T> {
+  T? firstWhereOrNull(bool Function(T) test) {
+    for (var element in this) {
+      if (test(element)) return element;
+    }
+
+    return null;
+  }
+}

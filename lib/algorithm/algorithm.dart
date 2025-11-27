@@ -33,14 +33,11 @@ bool trySwap(Item item, int k) {
 }
 
 bool findPartner(Group choice, int curr, int move) {
-  Item partner;
-  try {
-    partner = choice.members.firstWhere(
-      (partner) => (partner.assignedToIdx == curr && canMoveTo(partner, move)),
-    );
-  } on StateError {
-    return false;
-  }
+  Item? partner = choice.members.firstWhereOrNull(
+    (partner) => (partner.assignedToIdx == curr && canMoveTo(partner, move)),
+  );
+
+  if (partner == null) return false;
 
   moveTo(partner, move);
   return true;
@@ -53,7 +50,7 @@ void moveTo(Item item, int k) {
   item.assign(k);
 }
 
-/* 
+/* if item can't befavorably assigned
 bool trySwap2(Item item, int k) {
   for (int curr = k - 1; curr >= 0; curr--) {
       for (int move = curr + 1; move < k; move++) {
