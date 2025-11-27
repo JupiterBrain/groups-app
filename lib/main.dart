@@ -5,7 +5,7 @@ import 'package:window_manager/window_manager.dart';
 import 'package:groups_app/update_checker.dart';
 import 'package:groups_app/pages/input_page.dart';
 import 'package:groups_app/pages/output_page.dart';
-import 'package:groups_app/pages/tutorial_dialog.dart';
+
 
 //https://docs.flutter.dev/platform-integration/windows/building#supporting-windows-ui-guidelines
 //https://docs.flutter.dev/platform-integration/windows/building#msix-packaging
@@ -59,7 +59,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/input': (context) => const InputPage(),
         '/output': (context) => const OutputPage(),
-        '/tutorial': (context) => const TutorialDialog(),
       },
       debugShowCheckedModeBanner: false,
     );
