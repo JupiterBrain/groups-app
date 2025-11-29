@@ -31,8 +31,8 @@ class _RTextInputState extends State<RTextInput> {
   void initState() {
     super.initState();
 
-    _controller = TextEditingController(text: widget.value.value);
-    _focusNode = FocusNode();
+    _controller = .new(text: widget.value.value);
+    _focusNode = .new();
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
@@ -52,8 +52,9 @@ class _RTextInputState extends State<RTextInput> {
   void _commitValue() {
     final newValue = _controller.text;
     if (widget.value.value != newValue) {
-      if (widget.validator != null) {
-        final errorText = widget.validator!(newValue);
+      final validator = widget.validator;
+      if (validator != null) {
+        final errorText = validator(newValue);
 
         if (errorText != null) {
           _controller.text = errorText;
@@ -75,12 +76,14 @@ class _RTextInputState extends State<RTextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return wrapTextField(TextField(
-      controller: _controller,
-      decoration: InputDecoration(labelText: widget.label),
-      focusNode: _focusNode,
-      keyboardType: widget.keyboardType,
-      inputFormatters: widget.inputFormatters,
-    ));
+    return wrapTextField(
+      TextField(
+        controller: _controller,
+        decoration: .new(labelText: widget.label),
+        focusNode: _focusNode,
+        keyboardType: widget.keyboardType,
+        inputFormatters: widget.inputFormatters,
+      ),
+    );
   }
 }

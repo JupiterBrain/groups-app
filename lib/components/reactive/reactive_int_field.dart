@@ -17,10 +17,10 @@ class RIntField extends StatefulWidget {
   });
 
   @override
-  State<RIntField> createState() => _ReactiveIntInputValidatedState();
+  State<RIntField> createState() => _RIntFieldState();
 }
 
-class _ReactiveIntInputValidatedState extends State<RIntField> {
+class _RIntFieldState extends State<RIntField> {
   late final TextEditingController _controller;
   late final FocusNode _focusNode;
   String? _errorText;
@@ -49,20 +49,13 @@ class _ReactiveIntInputValidatedState extends State<RIntField> {
     final input = _controller.text.trim();
     final parsed = int.tryParse(input);
 
-    if (parsed == null) {
-      _showError("Nur ganze Zahlen erlaubt");
-      return;
-    } else {
-      if (parsed < widget.min!) {
-        _controller.text = "${~widget.value}";
-        _showError("Minimum: ${widget.min}");
-        return;
-      } else if (parsed > widget.max!) {
-        _controller.text = "${~widget.value}";
-        _showError("Maximum: ${widget.max}");
-        return;
-      }
-    }
+    if (parsed == null) return _showError("Nur ganze Zahlen erlaubt");
+
+    var min = widget.min;
+    if (min != null && parsed < min) return _showError("Minimum: $min");
+
+    var max = widget.max;
+    if (max != null && parsed > max) return _showError("Maximum: $max");
 
     // valid
     setState(() => _errorText = null);
@@ -70,7 +63,10 @@ class _ReactiveIntInputValidatedState extends State<RIntField> {
   }
 
   void _showError(String msg) {
-    setState(() => _errorText = msg);
+    setState(() {
+      _controller.text = "${~widget.value}";
+      _errorText = msg;
+    });
   }
 
   @override
@@ -83,15 +79,19 @@ class _ReactiveIntInputValidatedState extends State<RIntField> {
 
   @override
   Widget build(BuildContext context) {
-    return wrapTextField(TextField(
-      controller: _controller,
-      focusNode: _focusNode,
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[-]?\d*'))],
-      decoration: InputDecoration(
-        labelText: widget.label,
-        errorText: _errorText,
+    return wrapTextField(
+      TextField(
+        controller: _controller,
+        focusNode: _focusNode,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'[-]?\d*')),
+        ],
+        decoration: InputDecoration(
+          labelText: widget.label,
+          errorText: _errorText,
+        ),
       ),
-    ));
+    );
   }
 }

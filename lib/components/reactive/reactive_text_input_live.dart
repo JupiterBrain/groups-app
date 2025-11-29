@@ -18,7 +18,7 @@ class RTextInputLive extends StatelessWidget {
     this.inputFormatters,
     super.key,
   }) {
-    _controller = TextEditingController(text: value.value);
+    _controller = .new(text: value.value);
   }
 
   @override
@@ -26,13 +26,15 @@ class RTextInputLive extends StatelessWidget {
     return ReactiveWrapper(
       reactiveValues: [value],
       builder: (context) {
-        return wrapTextField(TextField(
-          decoration: InputDecoration(labelText: label),
-          controller: _controller,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          onChanged: (newValue) => value.value = newValue,
-        ));
+        return wrapTextField(
+          TextField(
+            decoration: .new(labelText: label),
+            controller: _controller,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            onChanged: (newValue) => value.value = newValue,
+          ),
+        );
       },
     );
   }
