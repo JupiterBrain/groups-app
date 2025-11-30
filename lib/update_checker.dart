@@ -13,8 +13,9 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
     final localVersion = packageInfo.version;
 
     final response = await http.get(
-      Uri.parse(
-          'https://api.github.com/repos/JupiterBrain/groups-app/releases/latest'),
+      .parse(
+        'https://api.github.com/repos/JupiterBrain/groups-app/releases/latest',
+      ),
       headers: {'Accept': 'application/vnd.github+json'},
     );
 
@@ -52,8 +53,11 @@ Future<void> checkForUpdate(GlobalKey<ScaffoldMessengerState> key) async {
   }
 }
 
-void showUpdateDialog(GlobalKey<ScaffoldMessengerState> key,
-    String localVersion, String latestVersion) {
+void showUpdateDialog(
+  GlobalKey<ScaffoldMessengerState> key,
+  String localVersion,
+  String latestVersion,
+) {
   key.currentState!.showSnackBar(
     SnackBar(
       showCloseIcon: true,
@@ -61,19 +65,23 @@ void showUpdateDialog(GlobalKey<ScaffoldMessengerState> key,
       action: SnackBarAction(
         label: 'Jetzt installieren',
         onPressed: () async {
-          final uri =
-              Uri.parse("https://JupiterBrain.github.io/groups-app/update");
+          final uri = Uri.parse(
+            "https://JupiterBrain.github.io/groups-app/update",
+          );
           if (!await canLaunchUrl(uri)) return;
           await launchUrl(uri, mode: LaunchMode.externalApplication);
         },
       ),
       content: RichText(
-        text: TextSpan(text: 'Es ist eine neue Version verfügbar ', children: [
-          TextSpan(
-            text: "$localVersion -> $latestVersion",
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          )
-        ]),
+        text: TextSpan(
+          text: 'Es ist eine neue Version verfügbar ',
+          children: [
+            TextSpan(
+              text: "$localVersion -> $latestVersion",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     ),
   );

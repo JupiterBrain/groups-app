@@ -11,23 +11,24 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   bool allowExcess = false,
 }) {
   var (groups, groupsErrors) = parseGroups(groupsTable, defaultCapacity);
-  var (items, itemsErrors) = parseItems(nrOfChoices, itemsTable, groups,
-      allowDuplicates: allowDuplicates, allowEmpty: allowEmpty);
+  var (items, itemsErrors) = parseItems(
+    nrOfChoices,
+    itemsTable,
+    groups,
+    allowDuplicates: allowDuplicates,
+    allowEmpty: allowEmpty,
+  );
 
-  var totalCapacity = groups.values
-      .map(
-        (group) => group.capacity,
-      )
-      .sum();
+  var totalCapacity = groups.values.map((group) => group.capacity).sum();
 
   if (totalCapacity < items.length && !allowExcess) {
     groupsErrors.insert(0, "Not enough capacity");
   }
 
   if (groupsErrors.isNotEmpty || itemsErrors.isNotEmpty) {
-    return Result.error((groupsErrors, itemsErrors));
+    return .error((groupsErrors, itemsErrors));
   } else {
-    return Result.ok((groups.values.toList(), items));
+    return .ok((groups.values.toList(), items));
   }
 }
 
@@ -38,10 +39,10 @@ Result<(Groups, Items), (Strings, Strings)> parse(
   Strings groupsErrors = [];
   Map<String, Group> groups = {};
   int? Function(String) capacityProvider = defaultCapacity == null
-      ? (field) => int.tryParse(field)
+      ? (field) => .tryParse(field)
       : (_) => defaultCapacity;
 
-  int offset = defaultCapacity == null ? 1 : 0;
+  var offset = defaultCapacity == null ? 1 : 0;
 
   void error(String error) {
     groupsErrors.add(error);
@@ -82,8 +83,12 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 }
 
 (Items, Strings) parseItems(
-    int nrOfChoices, TRows itemsTable, Map<String, Group> groups,
-    {bool allowDuplicates = false, bool allowEmpty = false}) {
+  int nrOfChoices,
+  TRows itemsTable,
+  Map<String, Group> groups, {
+  bool allowDuplicates = false,
+  bool allowEmpty = false,
+}) {
   Strings itemsErrors = [];
   Items items = [];
 
@@ -96,7 +101,8 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 
     if (row.length < nrOfChoices) {
       return error(
-          "Error in row $id: Element must have columns for all choices.");
+        "Error in row $id: Element must have columns for all choices.",
+      );
     }
 
     var description = row.sublist(0, row.length - nrOfChoices);
@@ -145,22 +151,24 @@ Result<(Groups, Items), (Strings, Strings)> parse(
 }
 
 Spreadsheet assembleAssignmentTable(Items items, Strings itemsOutputHeadline) {
-  return Spreadsheet.of(
+  return .of(
     itemsOutputHeadline,
     (List<Item>.from(items)..sort()).map((e) => e.row).toList(),
   )!;
 }
 
 Spreadsheet assembleGroupOverwiewTable(
-    Groups groups, Strings groupsOutputHeadline) {
-  return Spreadsheet.of(
-    groupsOutputHeadline,
-    groups.map((e) => e.row).toList(),
-  )!;
+  Groups groups,
+  Strings groupsOutputHeadline,
+) {
+  return .of(groupsOutputHeadline, groups.map((e) => e.row).toList())!;
 }
 
 Spreadsheet assembleDiagnosticsTable(
-    Groups groups, Items items, int nrOfChoices) {
+  Groups groups,
+  Items items,
+  int nrOfChoices,
+) {
   var absolute = List.filled(nrOfChoices + 2, 0);
 
   for (var item in items) {
@@ -185,5 +193,5 @@ Spreadsheet assembleDiagnosticsTable(
 
   table.add(["Summe", "${items.length}", "100"]);
 
-  return Spreadsheet.of(["Wahl", "Absolut", "%"], table)!;
+  return .of(["Wahl", "Absolut", "%"], table)!;
 }

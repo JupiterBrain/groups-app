@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groups_app/components/biaxial_scroll_view.dart';
 import 'package:groups_app/utils.dart';
 
 class SpreadsheetTable extends StatelessWidget {
@@ -7,15 +8,17 @@ class SpreadsheetTable extends StatelessWidget {
   const SpreadsheetTable(this.spreadsheet, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Table(
+  Widget build(BuildContext context) => BiaxialScrollView(
+    child: Table(
+      //TODO update table with external package
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       defaultColumnWidth: const IntrinsicColumnWidth(),
       border: TableBorder.all(color: Colors.grey, width: 1),
       children: [
         TableRow(
-          children:
-              spreadsheet.columns.map((title) => MyTableHeader(title)).toList(),
+          children: spreadsheet.columns
+              .map((title) => MyTableHeader(title))
+              .toList(),
         ),
         ...(spreadsheet.rows
             .map(
@@ -25,8 +28,8 @@ class SpreadsheetTable extends StatelessWidget {
             )
             .toList()),
       ],
-    );
-  }
+    ),
+  );
 }
 
 class MyTableHeader extends StatelessWidget {
@@ -35,15 +38,10 @@ class MyTableHeader extends StatelessWidget {
   const MyTableHeader(this.text, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      child: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(4),
+    child: Text(text, style: const TextStyle(fontWeight: .bold)),
+  );
 }
 
 class MyTableCell extends StatelessWidget {
@@ -52,10 +50,6 @@ class MyTableCell extends StatelessWidget {
   const MyTableCell(this.text, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      child: Text(text),
-    );
-  }
+  Widget build(BuildContext context) =>
+      Container(padding: const EdgeInsets.all(4), child: Text(text));
 }

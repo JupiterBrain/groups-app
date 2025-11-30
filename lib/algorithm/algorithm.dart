@@ -4,7 +4,7 @@ import 'package:groups_app/utils.dart';
 Set<Item> performAlgorithm(Items items) {
   Set<Item> unassignable = {};
 
-  for (Item item in items) {
+  for (final item in items) {
     if (!assignItem(item)) unassignable.add(item);
   }
 
@@ -33,7 +33,7 @@ bool trySwap(Item item, int k) {
 }
 
 bool findPartner(Group choice, int curr, int move) {
-  Item? partner = choice.members.firstWhereOrNull(
+  final partner = choice.members.firstWhereOrNull(
     (partner) => (partner.assignedToIdx == curr && canMoveTo(partner, move)),
   );
 
@@ -71,7 +71,7 @@ void randomRemaining(Groups groups, Set<Item> unassignable) {
 
   for (var item in unassignable) {
     if (vacantGroups.isEmpty) return;
-    var group = vacantGroups.first;
+    final group = vacantGroups.first;
     item.forceAssign(group);
     if (group.isFull) vacantGroups.remove(group);
   }

@@ -75,15 +75,13 @@ class _RTextInputState extends State<RTextInput> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return wrapTextField(
-      TextField(
-        controller: _controller,
-        decoration: .new(labelText: widget.label),
-        focusNode: _focusNode,
-        keyboardType: widget.keyboardType,
-        inputFormatters: widget.inputFormatters,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => wrapTextField(
+    TextField(
+      controller: _controller,
+      decoration: .new(labelText: widget.label),
+      focusNode: _focusNode,
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormatters,
+    ),
+  );
 }

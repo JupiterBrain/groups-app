@@ -16,6 +16,8 @@ import 'package:groups_app/pages/output_page.dart';
 //minGroupSize
 //balanceGroupSizes
 
+// package:two_dimensional_scrollables
+
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
@@ -45,23 +47,21 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Groups',
-      theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent)),
-      home: ScaffoldMessenger(
-        key: scaffoldMessengerKey,
-        child: const InputPage(),
-      ),
-      routes: {
-        '/input': (context) => const InputPage(),
-        '/output': (context) => const OutputPage(),
-      },
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+    title: 'Groups',
+    theme: .new(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
+    ),
+    home: ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: const InputPage(),
+    ),
+    routes: {
+      '/input': (context) => const InputPage(),
+      '/output': (context) => const OutputPage(),
+    },
+    debugShowCheckedModeBanner: false,
+  );
 }
 
 class MyWindowListener with WindowListener {

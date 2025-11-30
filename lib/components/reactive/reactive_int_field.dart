@@ -78,20 +78,16 @@ class _RIntFieldState extends State<RIntField> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return wrapTextField(
-      TextField(
-        controller: _controller,
-        focusNode: _focusNode,
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[-]?\d*')),
-        ],
-        decoration: InputDecoration(
-          labelText: widget.label,
-          errorText: _errorText,
-        ),
+  Widget build(BuildContext context) => wrapTextField(
+    TextField(
+      controller: _controller,
+      focusNode: _focusNode,
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[-]?\d*'))],
+      decoration: InputDecoration(
+        labelText: widget.label,
+        errorText: _errorText,
       ),
-    );
-  }
+    ),
+  );
 }

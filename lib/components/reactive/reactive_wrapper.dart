@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:groups_app/utils.dart';
 
 class ReactiveWrapper extends StatefulWidget {
-  final List<RV<dynamic>> reactiveValues;
-  final Widget Function(BuildContext context) builder;
+  final List<RV> reactiveValues;
+  final Widget? Function(BuildContext context) builder;
 
   const ReactiveWrapper({
     required this.reactiveValues,
@@ -39,7 +39,6 @@ class _ReactiveWrapperState extends State<ReactiveWrapper> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.builder(context);
-  }
+  Widget build(BuildContext context) =>
+      widget.builder(context) ?? const SizedBox.shrink();
 }

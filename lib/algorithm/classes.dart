@@ -1,10 +1,10 @@
 import 'package:groups_app/utils.dart';
 
 class Group implements Comparable<Group>, CSVSerializable {
-  late final int id;
-  late final String identifier;
-  late final Strings description;
-  late final int capacity;
+  final int id;
+  final String identifier;
+  final Strings description;
+  final int capacity;
   final Set<Item> members = {};
 
   Group(this.id, this.identifier, this.description, this.capacity);
@@ -36,23 +36,25 @@ class Group implements Comparable<Group>, CSVSerializable {
 }
 
 class Item implements Comparable<Item>, CSVSerializable {
-  late final int id;
-  late final Strings description;
-  late final Groups choices;
-  Group? assignedTo;
-  int assignedToIdx = -1;
+  final int id;
+  final Strings description;
+  final Groups choices;
+  Group? _assignedTo;
+  int _assignedToIdx = -1;
+
+  get assignedToIdx => _assignedToIdx;
 
   Item(this.id, this.description, this.choices);
 
-  bool get isAssigned => assignedTo != null;
-  bool get isUnassigned => assignedTo == null;
+  bool get isAssigned => _assignedTo != null;
+  bool get isUnassigned => _assignedTo == null;
 
   bool forceAssign(Group group) {
     if (isAssigned) return false;
     if (!group.addMember(this)) return false;
 
-    assignedTo = group;
-    assignedToIdx = -2;
+    _assignedTo = group;
+    _assignedToIdx = -2;
     return true;
   }
 
@@ -64,18 +66,20 @@ class Item implements Comparable<Item>, CSVSerializable {
 
     if (!group.addMember(this)) return false;
 
-    assignedTo = group;
-    assignedToIdx = k;
+    _assignedTo = group;
+    _assignedToIdx = k;
     return true;
   }
 
   bool unassign() {
-    if (isUnassigned) return false;
+    var assignedTo = _assignedTo;
 
-    if (!assignedTo!.removeMember(this)) return false;
+    if (assignedTo == null) return false;
 
-    assignedTo = null;
-    assignedToIdx = -1;
+    if (!assignedTo.removeMember(this)) return false;
+
+    _assignedTo = null;
+    _assignedToIdx = -1;
     return true;
   }
 
@@ -83,19 +87,20 @@ class Item implements Comparable<Item>, CSVSerializable {
   int compareTo(Item other) => id - other.id;
 
   @override
-  String get csv => "$id,${description.join(' | ')},${assignedToIdx + 1},"
-      "${assignedTo == null ? "null" : assignedTo!.identifier},"
+  String get csv =>
+      "$id,${description.join(' | ')},${_assignedToIdx + 1},"
+      "${_assignedTo == null ? "null" : _assignedTo!.identifier},"
       "${choices.map((e) => e.identifier).join(' | ')}";
 
   @override
   String csvColumns() => "ID,Beschreibung,k,Gruppe,Wahlen";
   Strings get row => [
-        "$id",
-        ...description,
-        "${assignedToIdx + 1}",
-        (assignedTo == null ? "unzugewiesen" : assignedTo!.identifier),
-        ...choices.map((e) => e.identifier),
-      ];
+    "$id",
+    ...description,
+    "${_assignedToIdx + 1}",
+    (_assignedTo == null ? "unzugewiesen" : _assignedTo!.identifier),
+    ...choices.map((e) => e.identifier),
+  ];
 
   @override
   String toString() => csv;

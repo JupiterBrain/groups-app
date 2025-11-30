@@ -8,12 +8,10 @@ class ListBuilder extends StatelessWidget {
   final Widget Function(BuildContext context, String item) builder;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: (list).map((item) => builder(context, item)).toList(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: (list).map((item) => builder(context, item)).toList(),
+    ),
+  );
 }

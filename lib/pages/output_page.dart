@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:groups_app/components/biaxial_scroll_view.dart';
-import 'package:groups_app/components/reactive/r_table.dart';
+import 'package:groups_app/components/reactive/reactive_wrapper.dart';
+import 'package:groups_app/components/table.dart';
 import 'package:groups_app/controller.dart';
+import 'package:groups_app/utils.dart';
 
 class OutputPage extends StatefulWidget {
   const OutputPage({super.key});
@@ -15,17 +16,21 @@ class _OutputPageState extends State<OutputPage>
   late final TabController _tabController;
 
   static Map<Tab, Widget> tabs = {
-    const Tab(text: "Gruppenübersicht"):
-        RTable(table: viewController.groupOverviewTable),
-    const Tab(text: "Zuordnungsergebnis"):
-        BiaxialScrollView(child: RTable(table: viewController.assignmentTable)),
-    const Tab(text: "Zuordnungsanalyse"):
-        RTable(table: viewController.analysisTable),
+    //TODO add scroll to other tables
+    const .new(text: "Gruppenübersicht"): reactiveTable(
+      viewController.groupOverviewTable,
+    ),
+    const .new(text: "Zuordnungsergebnis"): reactiveTable(
+      viewController.assignmentTable,
+    ),
+    const .new(text: "Zuordnungsanalyse"): reactiveTable(
+      viewController.analysisTable,
+    ),
   };
 
   @override
   void initState() {
-    _tabController = TabController(
+    _tabController = .new(
       length: tabs.length,
       vsync: this,
       initialIndex: ~viewController.outputPageTab,
@@ -49,10 +54,7 @@ class _OutputPageState extends State<OutputPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ausgabe'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: tabs.keys.toList(),
-        ),
+        bottom: TabBar(controller: _tabController, tabs: tabs.keys.toList()),
       ),
       body: TabBarView(
         controller: _tabController,
@@ -62,14 +64,21 @@ class _OutputPageState extends State<OutputPage>
         child: FloatingActionButton.extended(
           onPressed: viewController.copyCurrentResultTableToClipboard,
           label: const Row(
-            children: [
-              Text('Kopieren'),
-              SizedBox(width: 4),
-              Icon(Icons.copy),
-            ],
+            children: [Text('Kopieren'), SizedBox(width: 4), Icon(Icons.copy)],
           ),
         ),
       ),
     );
   }
 }
+
+Widget reactiveTable(RV<Spreadsheet?> rv) => ReactiveWrapper(
+  reactiveValues: [rv],
+  builder: (context) {
+    var table = ~rv;
+
+    if (table == null) return null;
+
+    return SpreadsheetTable(table);
+  },
+);

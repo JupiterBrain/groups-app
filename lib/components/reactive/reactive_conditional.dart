@@ -9,16 +9,14 @@ class RConditional extends StatelessWidget {
   const RConditional({required this.value, required this.builder, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ReactiveWrapper(
-      reactiveValues: [value],
-      builder: (context) {
-        if (~value) {
-          return builder(context);
-        } else {
-          return const SizedBox.shrink(); //EmptyWidget();
-        }
-      },
-    );
-  }
+  Widget build(BuildContext context) => ReactiveWrapper(
+    reactiveValues: [value],
+    builder: (context) {
+      if (~value) {
+        return builder(context);
+      } else {
+        return const SizedBox.shrink(); //EmptyWidget();
+      }
+    },
+  );
 }

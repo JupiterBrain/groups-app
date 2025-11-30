@@ -70,7 +70,7 @@ class _InputPageState extends State<InputPage> {
       ),
       floatingActionButton: RConditional(
         value: viewController.readyToStart,
-        builder: (context) => AlgorithmStartButton(context: context),
+        builder: (context) => const AlgorithmStartButton(),
       ),
     );
   }

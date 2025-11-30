@@ -6,17 +6,13 @@ class WarningContainer extends StatelessWidget {
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.amber.shade100,
-        border: Border.all(color: Colors.amber, width: 2),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-      ),
-      child: Column(
-        children: children,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      color: Colors.amber.shade100,
+      border: Border.all(color: Colors.amber, width: 2),
+      borderRadius: const BorderRadius.all(.circular(8)),
+    ),
+    child: Column(children: children),
+  );
 }
