@@ -1,6 +1,6 @@
 import 'package:groups_app/utils.dart';
 
-class Group implements Comparable<Group>, CSVSerializable {
+class Group implements Comparable<Group> {
   final int id;
   final String identifier;
   final Strings description;
@@ -23,11 +23,8 @@ class Group implements Comparable<Group>, CSVSerializable {
   @override
   int compareTo(Group other) => id - other.id;
 
-  @override
   String get csv => "$id,$identifier,$size,$capacity";
-
-  @override
-  String csvColumns() => "ID,Identifikator,Größe,Kapazität";
+  static String csvColumns() => "ID,Identifikator,Größe,Kapazität";
 
   Strings get row => ["$id", identifier, ...description, "$size", "$capacity"];
 
@@ -35,7 +32,7 @@ class Group implements Comparable<Group>, CSVSerializable {
   String toString() => csv;
 }
 
-class Item implements Comparable<Item>, CSVSerializable {
+class Item implements Comparable<Item> {
   final int id;
   final Strings description;
   final Groups choices;
@@ -86,14 +83,12 @@ class Item implements Comparable<Item>, CSVSerializable {
   @override
   int compareTo(Item other) => id - other.id;
 
-  @override
   String get csv =>
       "$id,${description.join(' | ')},${_assignedToIdx + 1},"
       "${_assignedTo == null ? "null" : _assignedTo!.identifier},"
       "${choices.map((e) => e.identifier).join(' | ')}";
+  static String csvColumns() => "ID,Beschreibung,k,Gruppe,Wahlen";
 
-  @override
-  String csvColumns() => "ID,Beschreibung,k,Gruppe,Wahlen";
   Strings get row => [
     "$id",
     ...description,

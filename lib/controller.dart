@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:groups_app/algorithm/algorithm.dart' as algorithm;
 import 'package:groups_app/algorithm/parser.dart' as parser;
 import 'package:groups_app/utils.dart';
+import 'package:groups_app/utils/clipboard.dart';
+import 'package:groups_app/utils/result.dart';
+import 'package:groups_app/utils/spreadsheet.dart';
 
 var viewController = ViewController();
 
@@ -68,11 +71,14 @@ class ViewController {
     if (groupsInputLocal == null || itemsInputLocal == null) return;
 
     var result = parser.parse(
-        ~nrOfChoices, groupsInputLocal.rows, itemsInputLocal.rows,
-        defaultCapacity: ~useDefaultCapacity ? ~defaultCapacity : null,
-        allowDuplicates: ~allowDuplicates,
-        allowEmpty: ~allowEmpty,
-        allowExcess: ~allowExcess);
+      ~nrOfChoices,
+      groupsInputLocal.rows,
+      itemsInputLocal.rows,
+      defaultCapacity: ~useDefaultCapacity ? ~defaultCapacity : null,
+      allowDuplicates: ~allowDuplicates,
+      allowEmpty: ~allowEmpty,
+      allowExcess: ~allowExcess,
+    );
 
     switch (result) {
       case Ok(value: (var groups, var items)):
@@ -112,7 +118,9 @@ class ViewController {
         parser.assembleAssignmentTable(itemsLocal, itemsOutputHeadlineLocal);
     groupOverviewTable <<
         parser.assembleGroupOverwiewTable(
-            groupsLocal, groupsOutputHeadlineLocal);
+          groupsLocal,
+          groupsOutputHeadlineLocal,
+        );
     analysisTable <<
         parser.assembleDiagnosticsTable(groupsLocal, itemsLocal, ~nrOfChoices);
 
@@ -150,14 +158,10 @@ class ViewController {
       defaultCapacity,
       allowDuplicates,
       allowEmpty,
-      allowExcess
+      allowExcess,
     ], parseInput);
 
-    RV.listen([
-      groupsInput,
-      useDefaultCapacity,
-      defaultCapacity,
-    ], () {
+    RV.listen([groupsInput, useDefaultCapacity, defaultCapacity], () {
       var groupsInputLocal = ~groupsInput;
 
       if (groupsInputLocal == null) return;
@@ -176,63 +180,52 @@ class ViewController {
       itemsTable << (Spreadsheet.from(itemsInputLocal)..prefixID());
     });
 
-    RV.listen(
-      [groupsInput],
-      () => groupsInputHeadline << (~groupsInput)?.columns,
-    );
+    RV.listen([
+      groupsInput,
+    ], () => groupsInputHeadline << (~groupsInput)?.columns);
 
-    RV.listen(
-      [itemsInput],
-      () => itemsInputHeadline << (~itemsInput)?.columns,
-    );
+    RV.listen([itemsInput], () => itemsInputHeadline << (~itemsInput)?.columns);
 
-    RV.listen(
-      [
-        groupsInputHeadline,
-        useDefaultCapacity,
-      ],
-      () {
-        var groupsInputHeadlineLocal = ~groupsInputHeadline;
+    RV.listen([groupsInputHeadline, useDefaultCapacity], () {
+      var groupsInputHeadlineLocal = ~groupsInputHeadline;
 
-        if (groupsInputHeadlineLocal == null) return;
+      if (groupsInputHeadlineLocal == null) return;
 
-        if ((~useDefaultCapacity)) {
-          groupsOutputHeadline <<
-              ["ID", ...groupsInputHeadlineLocal, "Größe", "Kapazität"];
-        } else {
-          groupsOutputHeadline <<
-              [
-                "ID",
-                ...groupsInputHeadlineLocal.sublist(
-                    0, groupsInputHeadlineLocal.length - 1),
-                "Größe",
-                groupsInputHeadlineLocal.last,
-              ];
-        }
-      },
-    );
-
-    RV.listen(
-      [
-        itemsInputHeadline,
-        nrOfChoices,
-      ],
-      () {
-        var itemsInputHeadlineLocal = ~itemsInputHeadline;
-
-        if (itemsInputHeadlineLocal == null) return;
-
-        itemsOutputHeadline <<
+      if ((~useDefaultCapacity)) {
+        groupsOutputHeadline <<
+            ["ID", ...groupsInputHeadlineLocal, "Größe", "Kapazität"];
+      } else {
+        groupsOutputHeadline <<
             [
               "ID",
-              ...(~itemsInputHeadline)!
-                  .sublist(0, itemsInputHeadlineLocal.length - ~nrOfChoices),
-              "k",
-              "Gruppe",
-              ...(~itemsInputHeadline)!
-                  .sublist(itemsInputHeadlineLocal.length - ~nrOfChoices),
+              ...groupsInputHeadlineLocal.sublist(
+                0,
+                groupsInputHeadlineLocal.length - 1,
+              ),
+              "Größe",
+              groupsInputHeadlineLocal.last,
             ];
-      },
-    );
+      }
+    });
+
+    RV.listen([itemsInputHeadline, nrOfChoices], () {
+      var itemsInputHeadlineLocal = ~itemsInputHeadline;
+
+      if (itemsInputHeadlineLocal == null) return;
+
+      itemsOutputHeadline <<
+          [
+            "ID",
+            ...(~itemsInputHeadline)!.sublist(
+              0,
+              itemsInputHeadlineLocal.length - ~nrOfChoices,
+            ),
+            "k",
+            "Gruppe",
+            ...(~itemsInputHeadline)!.sublist(
+              itemsInputHeadlineLocal.length - ~nrOfChoices,
+            ),
+          ];
+    });
   }
 }

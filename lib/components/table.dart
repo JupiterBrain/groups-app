@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groups_app/components/biaxial_scroll_view.dart';
-import 'package:groups_app/utils.dart';
+import 'package:groups_app/utils/spreadsheet.dart';
 
 class SpreadsheetTable extends StatelessWidget {
   final Spreadsheet spreadsheet;
