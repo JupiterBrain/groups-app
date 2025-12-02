@@ -3,8 +3,8 @@ import 'package:groups_app/components/reactive/reactive_wrapper.dart';
 import 'package:groups_app/utils.dart';
 
 class RConditional extends StatelessWidget {
-  final RV<bool> value;
-  final Widget Function(BuildContext context) builder;
+  final Reactive<bool> value;
+  final BuilderFn builder;
 
   const RConditional({required this.value, required this.builder, super.key});
 

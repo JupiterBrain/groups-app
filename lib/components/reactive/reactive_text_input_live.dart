@@ -4,7 +4,7 @@ import 'package:groups_app/components/reactive/reactive_wrapper.dart';
 import 'package:groups_app/utils.dart';
 
 class RTextInputLive extends StatelessWidget {
-  final RV<String> value;
+  final Reactive<String> value;
   final String label;
   late final TextEditingController _controller;
 
@@ -31,7 +31,7 @@ class RTextInputLive extends StatelessWidget {
           controller: _controller,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
-          onChanged: (newValue) => value.value = newValue,
+          onChanged: (newValue) => value << newValue,
         ),
       ),
     );

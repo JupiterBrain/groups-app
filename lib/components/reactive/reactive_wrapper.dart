@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groups_app/utils.dart';
 
 class ReactiveWrapper extends StatefulWidget {
-  final List<RV> reactiveValues;
+  final List<Reactive> reactiveValues;
   final Widget? Function(BuildContext context) builder;
 
   const ReactiveWrapper({
@@ -20,8 +20,8 @@ class _ReactiveWrapperState extends State<ReactiveWrapper> {
   void initState() {
     super.initState();
 
-    for (var rv in widget.reactiveValues) {
-      rv.addListener(_onChange);
+    for (final rv in widget.reactiveValues) {
+      rv >>> _onChange;
     }
   }
 
@@ -31,8 +31,8 @@ class _ReactiveWrapperState extends State<ReactiveWrapper> {
 
   @override
   void dispose() {
-    for (var rv in widget.reactiveValues) {
-      rv.addListener(_onChange);
+    for (final rv in widget.reactiveValues) {
+      rv.removeListener(_onChange);
     }
 
     super.dispose();

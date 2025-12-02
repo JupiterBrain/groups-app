@@ -7,43 +7,21 @@ import 'package:groups_app/utils/clipboard.dart';
 import 'package:groups_app/utils/result.dart';
 import 'package:groups_app/utils/spreadsheet.dart';
 
-var viewController = ViewController();
+final viewController = ViewController();
 
 class ViewController {
-  var nrOfChoices = 3.rv;
-  var useDefaultCapacity = false.rv;
-  var defaultCapacity = 15.rv;
+  final nrOfChoices = Reactive(3);
+  final useDefaultCapacity = Reactive(false);
+  final defaultCapacity = Reactive(3);
 
-  var allowDuplicates = false.rv;
-  var allowEmpty = false.rv;
-  var allowExcess = false.rv;
-  var randomRemaining = false.rv;
+  final allowDuplicates = Reactive(false);
+  final allowEmpty = Reactive(false);
+  final allowExcess = Reactive(false);
+  final randomRemaining = Reactive(false);
 
-  var groupsInput = RV<Spreadsheet?>(null);
-  var itemsInput = RV<Spreadsheet?>(null);
-  var groupsTable = RV<Spreadsheet?>(null);
-  var itemsTable = RV<Spreadsheet?>(null);
-  var groupsInputHeadline = RV<Strings?>(null);
-  var itemsInputHeadline = RV<Strings?>(null);
-  var groupsOutputHeadline = RV<Strings?>(null);
-  var itemsOutputHeadline = RV<Strings?>(null);
+  var outputPageTab = 0;
 
-  var groupsErrors = <String>[].rv;
-  var itemsErrors = <String>[].rv;
-
-  var groups = RV<Groups?>(null);
-  var items = RV<Items?>(null);
-
-  var readyToStart = false.rv;
-
-  var unassignable = RV<Items?>(null);
-
-  var outputPageTab = 0.rv;
-
-  var groupOverviewTable = RV<Spreadsheet?>(null);
-  var assignmentTable = RV<Spreadsheet?>(null);
-  var analysisTable = RV<Spreadsheet?>(null);
-
+  final groupsInput = Reactive<Spreadsheet?>(null);
   void importGroupsFromClipboard() async {
     var groupsInput = Spreadsheet.ofClipboardString(await getClipboardData());
 
@@ -54,6 +32,7 @@ class ViewController {
     this.groupsInput << groupsInput;
   }
 
+  final itemsInput = Reactive<Spreadsheet?>(null);
   void importItemsFromClipboard() async {
     var itemsInput = Spreadsheet.ofClipboardString(await getClipboardData());
 
@@ -63,6 +42,12 @@ class ViewController {
 
     this.itemsInput << itemsInput;
   }
+
+  final groups = Reactive<Groups?>(null);
+  final items = Reactive<Items?>(null);
+  final groupsErrors = Reactive<Strings>([]);
+  final itemsErrors = Reactive<Strings>([]);
+  final readyToStart = Reactive(false);
 
   void parseInput() {
     var groupsInputLocal = ~groupsInput;
@@ -96,6 +81,10 @@ class ViewController {
     }
   }
 
+  final unassignable = Reactive<Items?>(null);
+  final groupOverviewTable = Reactive<Spreadsheet?>(null);
+  final assignmentTable = Reactive<Spreadsheet?>(null);
+  final analysisTable = Reactive<Spreadsheet?>(null);
   void startAlgorithm(BuildContext context) {
     var groupsLocal = ~groups;
     var itemsLocal = ~items;
@@ -130,7 +119,7 @@ class ViewController {
   }
 
   void copyCurrentResultTableToClipboard() async {
-    var spreadsheet = switch (~outputPageTab) {
+    var spreadsheet = switch (outputPageTab) {
       0 => ~groupOverviewTable,
       1 => ~assignmentTable,
       2 => ~analysisTable,
@@ -143,6 +132,7 @@ class ViewController {
 
     var result = await setClipboardDataPlainText(clipboardString);
 
+    //TODO Add Feedback?
     switch (result) {
       case Ok(value: null):
       case Error(error: null):
@@ -150,7 +140,7 @@ class ViewController {
   }
 
   ViewController() {
-    RV.listen([
+    effect([
       groupsInput,
       itemsInput,
       nrOfChoices,
@@ -160,72 +150,81 @@ class ViewController {
       allowEmpty,
       allowExcess,
     ], parseInput);
+  }
 
-    RV.listen([groupsInput, useDefaultCapacity, defaultCapacity], () {
+  late final groupsTable = Reactive.from(
+    [groupsInput, useDefaultCapacity, defaultCapacity],
+    () {
       var groupsInputLocal = ~groupsInput;
 
-      if (groupsInputLocal == null) return;
+      if (groupsInputLocal == null) return null;
 
       var groupsTable = Spreadsheet.from(groupsInputLocal)..prefixID();
 
       if (~useDefaultCapacity) groupsTable.addGlobalCapacity(~defaultCapacity);
 
-      this.groupsTable << groupsTable;
-    });
+      return groupsTable;
+    },
+  );
 
-    RV.listen([itemsInput], () {
-      var itemsInputLocal = ~itemsInput;
+  late final itemsTable = Reactive.from([itemsInput], () {
+    var itemsInputLocal = ~itemsInput;
 
-      if (itemsInputLocal == null) return;
-      itemsTable << (Spreadsheet.from(itemsInputLocal)..prefixID());
-    });
+    if (itemsInputLocal == null) return null;
 
-    RV.listen([
-      groupsInput,
-    ], () => groupsInputHeadline << (~groupsInput)?.columns);
+    return Spreadsheet.from(itemsInputLocal)..prefixID();
+  });
 
-    RV.listen([itemsInput], () => itemsInputHeadline << (~itemsInput)?.columns);
+  late final groupsInputHeadline = Reactive.from([
+    groupsInput,
+  ], () => (~groupsInput)?.columns);
 
-    RV.listen([groupsInputHeadline, useDefaultCapacity], () {
+  late final itemsInputHeadline = Reactive.from([
+    itemsInput,
+  ], () => (~itemsInput)?.columns);
+
+  late final groupsOutputHeadline = Reactive.from(
+    [groupsInputHeadline, useDefaultCapacity],
+    () {
       var groupsInputHeadlineLocal = ~groupsInputHeadline;
 
-      if (groupsInputHeadlineLocal == null) return;
+      if (groupsInputHeadlineLocal == null) return null;
 
       if ((~useDefaultCapacity)) {
-        groupsOutputHeadline <<
-            ["ID", ...groupsInputHeadlineLocal, "Größe", "Kapazität"];
+        return ["ID", ...groupsInputHeadlineLocal, "Größe", "Kapazität"];
       } else {
-        groupsOutputHeadline <<
-            [
-              "ID",
-              ...groupsInputHeadlineLocal.sublist(
-                0,
-                groupsInputHeadlineLocal.length - 1,
-              ),
-              "Größe",
-              groupsInputHeadlineLocal.last,
-            ];
+        return [
+          "ID",
+          ...groupsInputHeadlineLocal.sublist(
+            0,
+            groupsInputHeadlineLocal.length - 1,
+          ),
+          "Größe",
+          groupsInputHeadlineLocal.last,
+        ];
       }
-    });
+    },
+  );
 
-    RV.listen([itemsInputHeadline, nrOfChoices], () {
+  late final itemsOutputHeadline = Reactive.from(
+    [itemsInputHeadline, nrOfChoices],
+    () {
       var itemsInputHeadlineLocal = ~itemsInputHeadline;
 
-      if (itemsInputHeadlineLocal == null) return;
+      if (itemsInputHeadlineLocal == null) return null;
 
-      itemsOutputHeadline <<
-          [
-            "ID",
-            ...(~itemsInputHeadline)!.sublist(
-              0,
-              itemsInputHeadlineLocal.length - ~nrOfChoices,
-            ),
-            "k",
-            "Gruppe",
-            ...(~itemsInputHeadline)!.sublist(
-              itemsInputHeadlineLocal.length - ~nrOfChoices,
-            ),
-          ];
-    });
-  }
+      return [
+        "ID",
+        ...(~itemsInputHeadline)!.sublist(
+          0,
+          itemsInputHeadlineLocal.length - ~nrOfChoices,
+        ),
+        "k",
+        "Gruppe",
+        ...(~itemsInputHeadline)!.sublist(
+          itemsInputHeadlineLocal.length - ~nrOfChoices,
+        ),
+      ];
+    },
+  );
 }

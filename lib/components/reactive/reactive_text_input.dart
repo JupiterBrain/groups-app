@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:groups_app/utils.dart';
 
 class RTextInput extends StatefulWidget {
-  final RV<String> value;
+  final Reactive<String> value;
   final String label;
   final String? Function(String)? validator;
 
@@ -44,14 +44,14 @@ class _RTextInputState extends State<RTextInput> {
   }
 
   void _externalUpdate(_) {
-    if (_controller.text != widget.value.value) {
-      _controller.text = widget.value.value;
+    if (_controller.text != ~widget.value) {
+      _controller.text = ~widget.value;
     }
   }
 
   void _commitValue() {
     final newValue = _controller.text;
-    if (widget.value.value != newValue) {
+    if (~widget.value != newValue) {
       final validator = widget.validator;
       if (validator != null) {
         final errorText = validator(newValue);
@@ -61,7 +61,7 @@ class _RTextInputState extends State<RTextInput> {
           return;
         }
       }
-      widget.value.value = newValue;
+      widget.value << newValue;
     }
   }
 

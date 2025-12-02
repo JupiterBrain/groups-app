@@ -8,6 +8,7 @@ typedef Strings = List<String>;
 typedef TRows = List<Strings>;
 typedef Groups = List<Group>;
 typedef Items = List<Item>;
+typedef BuilderFn = Widget Function(BuildContext context);
 
 extension Blank on String {
   bool get isBlank => trim().isEmpty;
@@ -37,11 +38,21 @@ Widget wrapTextField(TextField field) {
 
 // overridable <= >= ~ - - + < > >>> >> ~/
 
-class RV<T> {
+class Reactive<T> {
   T _value;
   final Set<Function(T)> _callbacks = {};
 
-  RV(this._value);
+  Reactive(this._value);
+
+  factory Reactive.from(List<Reactive> dependencies, T Function() computeFn) {
+    var reactive = Reactive(computeFn());
+
+    for (var dep in dependencies) {
+      dep.addListener((_) => reactive.value = computeFn());
+    }
+
+    return reactive;
+  }
 
   void notify() {
     for (var callback in _callbacks) {
@@ -54,18 +65,12 @@ class RV<T> {
   T operator ~() => value;
 
   set value(T newValue) {
+    if (newValue == _value) return;
     _value = newValue;
     notify();
   }
 
   void operator <<(T newValue) => value = newValue;
-
-  void update(T newValue) => value = newValue;
-
-  void mutate(Function(T) mutation) {
-    mutation(_value);
-    notify();
-  }
 
   T addListener(Function(T) callback) {
     _callbacks.add(callback);
@@ -75,16 +80,10 @@ class RV<T> {
   T operator >>>(Function(T) callback) => addListener(callback);
 
   void removeListener(Function(T) callback) => _callbacks.remove(callback);
-
-  void operator ~/(Function(T) callback) => removeListener(callback);
-
-  static void listen(List<RV> values, void Function() callback) {
-    for (var value in values) {
-      value >>> ((_) => callback());
-    }
-  }
 }
 
-extension MakeReactive<T> on T {
-  RV<T> get rv => RV(this);
+void effect(List<Reactive> values, void Function() callback) {
+  for (var value in values) {
+    value >>> ((_) => callback());
+  }
 }

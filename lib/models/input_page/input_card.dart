@@ -10,9 +10,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class InputCard extends StatelessWidget {
   final String titlePrefix;
-  final Function() pasteAction;
-  final RV<Spreadsheet?> table;
-  final RV<Strings> errors;
+  final void Function() pasteAction;
+  final Reactive<Spreadsheet?> table;
+  final Reactive<Strings> errors;
   final String formatInfo;
   final String anchor;
 

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:groups_app/utils.dart';
 
 class RIntField extends StatefulWidget {
-  final RV<int> value;
+  final Reactive<int> value;
   final int? min;
   final int? max;
   final String label;
@@ -28,22 +28,22 @@ class _RIntFieldState extends State<RIntField> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.value.value.toString());
+    _controller = TextEditingController(text: (~widget.value).toString());
     _focusNode = FocusNode();
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) _tryCommit();
     });
 
-    widget.value.addListener(_externalUpdate);
+    //widget.value >>> _externalUpdate;
   }
 
-  void _externalUpdate(_) {
-    final ext = widget.value.value.toString();
+  /*  void _externalUpdate(_) {
+    final ext = (~widget.value).toString();
     if (_controller.text != ext) {
       _controller.text = ext;
     }
-  }
+  } */
 
   void _tryCommit() {
     final input = _controller.text.trim();
@@ -59,7 +59,7 @@ class _RIntFieldState extends State<RIntField> {
 
     // valid
     setState(() => _errorText = null);
-    widget.value.value = parsed;
+    widget.value << parsed;
   }
 
   void _showError(String msg) {
@@ -73,7 +73,7 @@ class _RIntFieldState extends State<RIntField> {
   void dispose() {
     _controller.dispose();
     _focusNode.dispose();
-    widget.value.removeListener(_externalUpdate);
+    //widget.value.removeListener(_externalUpdate);
     super.dispose();
   }
 

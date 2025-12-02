@@ -17,7 +17,6 @@ class _OutputPageState extends State<OutputPage>
   late final TabController _tabController;
 
   static Map<Tab, Widget> tabs = {
-    //TODO add scroll to other tables
     const .new(text: "Gruppenübersicht"): reactiveTable(
       viewController.groupOverviewTable,
     ),
@@ -41,7 +40,7 @@ class _OutputPageState extends State<OutputPage>
   }
 
   void updateOutputPageTab() =>
-      viewController.outputPageTab << _tabController.index;
+      viewController.outputPageTab = _tabController.index;
 
   @override
   void dispose() {
@@ -73,7 +72,7 @@ class _OutputPageState extends State<OutputPage>
   }
 }
 
-Widget reactiveTable(RV<Spreadsheet?> rv) => ReactiveWrapper(
+Widget reactiveTable(Reactive<Spreadsheet?> rv) => ReactiveWrapper(
   reactiveValues: [rv],
   builder: (context) {
     var table = ~rv;
